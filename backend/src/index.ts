@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import express, { type NextFunction, type Request, type Response } from "express";
 import { errorHandler } from "./middleware/errorHandler";
 import healthRouter from "./routes/health";
+import tipsRouter from "./routes/tips";
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
 app.use("/api/health", healthRouter);
+app.use("/api/tips", tipsRouter);
 
 app.use((req: Request, res: Response) => {
   res.status(404).json({
