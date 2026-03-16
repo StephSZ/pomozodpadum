@@ -2,37 +2,28 @@ import type { Request, Response } from "express";
 import { getAllCorrections, submitWasteCorrection } from "../services/wasteService";
 import type { ContainerType } from "../types";
 import { ValidationError } from "../utils/errors";
-
-const validContainers = new Set<ContainerType>([
-  "plastic",
-  "paper",
-  "glass",
-  "mixed",
-  "bio",
-  "metal",
-  "hazardous",
-  "electro",
-  "carton",
-]);
-
-function normalizeOptionalString(value: unknown) {
-  if (typeof value !== "string") {
-    return undefined;
-  }
-
-  const trimmed = value.trim();
-  return trimmed === "" ? undefined : trimmed;
-}
+import {
+  assertContainerType,
+  assertUuid,
+  sanitizeStringInput,
+} from "../middleware/validate";
 
 export async function submitCorrection(req: Request, res: Response) {
-  const wasteId = normalizeOptionalString(req.body?.wasteId);
-  const correctedName = normalizeOptionalString(req.body?.correctedName);
-  const correctedContainerValue = normalizeOptionalString(req.body?.correctedContainer);
-  const note = normalizeOptionalString(req.body?.note);
+  const rawWasteId = sanitizeStringInput(req.body?.wasteId, {
+    maxLength: 36,
+    required: true,
+  });
+  const correctedName = sanitizeStringInput(req.body?.correctedName, {
+    maxLength: 120,
+  });
+  const correctedContainerValue = sanitizeStringInput(req.body?.correctedContainer, {
+    maxLength: 20,
+  });
+  const note = sanitizeStringInput(req.body?.note, {
+    maxLength: 600,
+  });
 
-  if (!wasteId) {
-    throw new ValidationError("wasteId is required");
-  }
+  const wasteId = assertUuid(rawWasteId, "wasteId");
 
   if (!correctedName && !correctedContainerValue) {
     throw new ValidationError(
@@ -40,17 +31,14 @@ export async function submitCorrection(req: Request, res: Response) {
     );
   }
 
-  if (
-    correctedContainerValue &&
-    !validContainers.has(correctedContainerValue as ContainerType)
-  ) {
-    throw new ValidationError("correctedContainer must be a valid waste container type");
-  }
+  const correctedContainer = correctedContainerValue
+    ? assertContainerType(correctedContainerValue, "correctedContainer")
+    : undefined;
 
   const result = await submitWasteCorrection({
     wasteId,
     correctedName,
-    correctedContainer: correctedContainerValue as ContainerType | undefined,
+    correctedContainer,
     note,
   });
 

@@ -6,18 +6,10 @@ import {
 } from "../services/wasteService";
 import type { ContainerType } from "../types";
 import { ValidationError } from "../utils/errors";
-
-const validContainers = new Set<ContainerType>([
-  "plastic",
-  "paper",
-  "glass",
-  "mixed",
-  "bio",
-  "metal",
-  "hazardous",
-  "electro",
-  "carton",
-]);
+import {
+  assertContainerType,
+  sanitizeStringInput,
+} from "../middleware/validate";
 
 function parsePositiveInt(value: unknown, fallback: number) {
   if (value === undefined) {
@@ -38,18 +30,11 @@ function parseContainer(value: unknown): ContainerType | undefined {
     return undefined;
   }
 
-  if (typeof value !== "string" || !validContainers.has(value as ContainerType)) {
-    throw new ValidationError("container must be a valid waste container type");
-  }
-
-  return value as ContainerType;
+  return assertContainerType(value, "container");
 }
 
 export async function getHistory(req: Request, res: Response) {
-  const search =
-    typeof req.query.search === "string" && req.query.search.trim() !== ""
-      ? req.query.search.trim()
-      : undefined;
+  const search = sanitizeStringInput(req.query.search, { maxLength: 120 });
   const container = parseContainer(req.query.container);
   const page = parsePositiveInt(req.query.page, 1);
   const limit = parsePositiveInt(req.query.limit, 50);
