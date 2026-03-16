@@ -9,6 +9,17 @@ export type ContainerType =
   | "electro"
   | "carton";
 
+export interface ContainerInfo {
+  type: ContainerType;
+  name: string;
+  color: string;
+  emoji: string;
+  description: string;
+  belongs: string[];
+  doesNotBelong: string[];
+  tip: string;
+}
+
 export interface WasteItem {
   id: string;
   name: string;
