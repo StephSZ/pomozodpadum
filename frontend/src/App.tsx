@@ -1,3 +1,4 @@
+import { MapPin } from "lucide-react";
 import { NavLink, Navigate, Route, Routes } from "react-router-dom";
 import { HomePage } from "./pages/HomePage";
 import { ScanPage } from "./pages/ScanPage";
@@ -5,13 +6,15 @@ import { WastePage } from "./pages/WastePage";
 import { HistoryPage } from "./pages/HistoryPage";
 import { StatsPage } from "./pages/StatsPage";
 import { InfoPage } from "./pages/InfoPage";
+import { MapPage } from "./pages/MapPage";
 
 function Layout() {
   const items = [
     { to: "/", label: "Domů" },
     { to: "/scan", label: "Skenovat" },
-    { to: "/history", label: "Historie" },
     { to: "/stats", label: "Statistiky" },
+    { to: "/map", label: "Mapa", icon: <MapPin size={16} /> },
+    { to: "/history", label: "Historie" },
     { to: "/info", label: "Info" },
   ];
 
@@ -34,6 +37,7 @@ function Layout() {
             end={item.to === "/"}
             className={({ isActive }) => (isActive ? "nav__link nav__link--active" : "nav__link")}
           >
+            {"icon" in item ? <span className="nav__icon">{item.icon}</span> : null}
             {item.label}
           </NavLink>
         ))}
@@ -45,6 +49,7 @@ function Layout() {
         <Route element={<WastePage />} path="/waste/:id" />
         <Route element={<HistoryPage />} path="/history" />
         <Route element={<StatsPage />} path="/stats" />
+        <Route element={<MapPage />} path="/map" />
         <Route element={<InfoPage />} path="/info" />
         <Route element={<Navigate replace to="/" />} path="*" />
       </Routes>

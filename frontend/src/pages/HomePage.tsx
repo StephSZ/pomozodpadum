@@ -78,6 +78,20 @@ export function HomePage() {
           ) : null}
         </Card>
       </div>
+
+      <Card title="Kam s odpadem dál">
+        <div className="stack stack--tight">
+          <p>Potřebujete najít nejbližší kontejnery? Otevřete mapu sběrných míst.</p>
+          <div className="row row--wrap">
+            <Link className="button" to="/scan">
+              Skenuj odpad
+            </Link>
+            <Link className="button button--secondary" to="/map">
+              Najdi kontejner 🗺
+            </Link>
+          </div>
+        </div>
+      </Card>
     </div>
   );
 }

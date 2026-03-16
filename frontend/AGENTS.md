@@ -27,6 +27,7 @@ Frontend je funkcni SPA nad backend API. Vstup je v [frontend/src/main.tsx](C:\U
 - `/waste/:id` - detail odpadu
 - `/history` - historie skenu
 - `/stats` - statistiky
+- `/map` - mapa kontejnerů z KamTridit.cz s fallback odkazem do nového okna
 - `/info` - informace a pruvodce trideni
 
 ## Konvence pojmenovani
