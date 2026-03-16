@@ -30,6 +30,8 @@ Backend je funkcni REST API. Server je v [backend/src/index.ts](C:\Users\shura\p
 | GET | /api/stats | Statistiky uzivatele |
 | GET | /api/containers | Pruvodce trideni - vsechny kontejnery |
 | GET | /api/containers/:type | Detail kontejneru |
+| GET | /api/catalog | Katalog odpadu s fulltextem a filtry podle pismene a kategorie |
+| GET | /api/catalog/:id | Detail polozky katalogu odpadu |
 | DELETE | /api/history | Smazani cele historie pri `confirm=true` |
 | GET | /api/corrections | Seznam korekci |
 

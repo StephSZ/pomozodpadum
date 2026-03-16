@@ -4,6 +4,7 @@ import rateLimit from "express-rate-limit";
 import express, { type NextFunction, type Request, type Response } from "express";
 import helmet from "helmet";
 import analyzeRouter from "./routes/analyze";
+import catalogRouter from "./routes/catalog";
 import containersRouter from "./routes/containers";
 import correctionsRouter from "./routes/corrections";
 import { errorHandler } from "./middleware/errorHandler";
@@ -79,6 +80,7 @@ app.use("/api/history", historyRouter);
 app.use("/api/corrections", correctionsRouter);
 app.use("/api/stats", statsRouter);
 app.use("/api/containers", containersRouter);
+app.use("/api/catalog", catalogRouter);
 
 app.use((req: Request, res: Response) => {
   res.status(404).json({

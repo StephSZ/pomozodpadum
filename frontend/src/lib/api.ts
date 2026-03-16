@@ -5,6 +5,8 @@ import type {
   HistoryResponse,
   StatsResponse,
   UserCorrection,
+  WasteCatalogItem,
+  WasteCatalogResponse,
   WasteItem,
 } from "../types";
 
@@ -97,5 +99,30 @@ export const api = {
   },
   getContainer(type: string) {
     return fetchApi<ContainerInfo>(`/containers/${type}`);
+  },
+  getCatalog(params?: {
+    search?: string;
+    letter?: string;
+    category?: string;
+  }) {
+    const searchParams = new URLSearchParams();
+
+    if (params?.search) {
+      searchParams.set("search", params.search);
+    }
+
+    if (params?.letter) {
+      searchParams.set("letter", params.letter);
+    }
+
+    if (params?.category) {
+      searchParams.set("category", params.category);
+    }
+
+    const suffix = searchParams.toString();
+    return fetchApi<WasteCatalogResponse>(`/catalog${suffix ? `?${suffix}` : ""}`);
+  },
+  getCatalogItem(id: string) {
+    return fetchApi<WasteCatalogItem>(`/catalog/${id}`);
   },
 };

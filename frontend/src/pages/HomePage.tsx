@@ -81,13 +81,16 @@ export function HomePage() {
 
       <Card title="Kam s odpadem dál">
         <div className="stack stack--tight">
-          <p>Potřebujete najít nejbližší kontejnery? Otevřete mapu sběrných míst.</p>
+          <p>Potřebujete najít nejbližší kontejnery nebo rychle zjistit, kam co patří?</p>
           <div className="row row--wrap">
             <Link className="button" to="/scan">
               Skenuj odpad
             </Link>
             <Link className="button button--secondary" to="/map">
               Najdi kontejner 🗺
+            </Link>
+            <Link className="button button--secondary" to="/catalog">
+              📖 Katalog odpadů
             </Link>
           </div>
         </div>

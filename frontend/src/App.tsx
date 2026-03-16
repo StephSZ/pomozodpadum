@@ -7,6 +7,7 @@ import { HistoryPage } from "./pages/HistoryPage";
 import { StatsPage } from "./pages/StatsPage";
 import { InfoPage } from "./pages/InfoPage";
 import { MapPage } from "./pages/MapPage";
+import { CatalogPage } from "./pages/CatalogPage";
 
 function Layout() {
   const items = [
@@ -50,6 +51,7 @@ function Layout() {
         <Route element={<HistoryPage />} path="/history" />
         <Route element={<StatsPage />} path="/stats" />
         <Route element={<MapPage />} path="/map" />
+        <Route element={<CatalogPage />} path="/catalog" />
         <Route element={<InfoPage />} path="/info" />
         <Route element={<Navigate replace to="/" />} path="*" />
       </Routes>

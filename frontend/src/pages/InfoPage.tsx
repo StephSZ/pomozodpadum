@@ -24,10 +24,15 @@ export function InfoPage() {
     <div className="stack">
       <Card title="Mapa kontejnerů">
         <div className="stack stack--tight">
-          <p>Chcete rovnou najít nejbližší kontejnery? Otevřete mapu sběrných míst.</p>
-          <Link className="button" to="/map">
-            Najdi kontejner 🗺
-          </Link>
+          <p>Chcete rovnou najít nejbližší kontejnery nebo projít odpadový slovníček?</p>
+          <div className="row row--wrap">
+            <Link className="button" to="/map">
+              Najdi kontejner 🗺
+            </Link>
+            <Link className="button button--secondary" to="/catalog">
+              📖 Katalog odpadů · Kam co patří?
+            </Link>
+          </div>
         </div>
       </Card>
 

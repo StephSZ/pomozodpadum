@@ -78,3 +78,27 @@ export interface AnalyzeResponse {
   success: boolean;
   waste: WasteItem;
 }
+
+export type WasteCatalogCategory =
+  | "plasty"
+  | "papír"
+  | "sklo"
+  | "kovy"
+  | "nápojové kartony"
+  | "další odpady";
+
+export interface WasteCatalogItem {
+  id: string;
+  name: string;
+  letter: string;
+  categories: WasteCatalogCategory[];
+  description: string;
+  tip?: string;
+}
+
+export interface WasteCatalogResponse {
+  items: WasteCatalogItem[];
+  total: number;
+  letters: string[];
+  categories: WasteCatalogCategory[];
+}
