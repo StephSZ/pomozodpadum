@@ -6,6 +6,7 @@ import correctionsRouter from "./routes/corrections";
 import { errorHandler } from "./middleware/errorHandler";
 import healthRouter from "./routes/health";
 import historyRouter from "./routes/history";
+import statsRouter from "./routes/stats";
 import tipsRouter from "./routes/tips";
 import wasteRouter from "./routes/waste";
 
@@ -36,6 +37,7 @@ app.use("/api/analyze", analyzeRouter);
 app.use("/api/waste", wasteRouter);
 app.use("/api/history", historyRouter);
 app.use("/api/corrections", correctionsRouter);
+app.use("/api/stats", statsRouter);
 
 app.use((req: Request, res: Response) => {
   res.status(404).json({
