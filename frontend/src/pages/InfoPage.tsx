@@ -8,7 +8,7 @@ export function InfoPage() {
   });
 
   if (containers.loading && !containers.data) {
-    return <LoadingState label="Nacitam pruvodce trideni..." />;
+    return <LoadingState label="Načítám průvodce třídění..." />;
   }
 
   if (containers.error && !containers.data) {
@@ -16,7 +16,7 @@ export function InfoPage() {
   }
 
   if (!containers.data) {
-    return <ErrorState message="Pruvodce trideni neni k dispozici." />;
+    return <ErrorState message="Průvodce třídění není k dispozici." />;
   }
 
   return (
@@ -24,7 +24,7 @@ export function InfoPage() {
       {containers.data.map((container) => (
         <Card key={container.type} title={`${container.emoji} ${container.name}`}>
           <details open>
-            <summary>Co patri</summary>
+            <summary>Co patří</summary>
             <ul>
               {container.belongs.map((item) => (
                 <li key={item}>{item}</li>
@@ -32,7 +32,7 @@ export function InfoPage() {
             </ul>
           </details>
           <details>
-            <summary>Co nepatri</summary>
+            <summary>Co nepatří</summary>
             <ul>
               {container.doesNotBelong.map((item) => (
                 <li key={item}>{item}</li>

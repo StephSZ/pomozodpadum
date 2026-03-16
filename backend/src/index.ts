@@ -39,7 +39,7 @@ const globalRateLimit = rateLimit({
   legacyHeaders: false,
   message: {
     success: false,
-    error: "Too many requests, please try again later.",
+    error: "Příliš mnoho požadavků, zkuste to prosím později.",
   },
 });
 
@@ -50,7 +50,7 @@ const analyzeRateLimit = rateLimit({
   legacyHeaders: false,
   message: {
     success: false,
-    error: "Analyze rate limit exceeded. Please try again later.",
+    error: "Limit pro analýzu byl překročen. Zkuste to prosím později.",
   },
 });
 
@@ -64,7 +64,7 @@ app.use(
         return;
       }
 
-      callback(new ValidationError("Origin not allowed by CORS"));
+      callback(new ValidationError("Origin není povolený v CORS"));
     },
   }),
 );
@@ -83,7 +83,7 @@ app.use("/api/containers", containersRouter);
 app.use((req: Request, res: Response) => {
   res.status(404).json({
     success: false,
-    error: `Route ${req.method} ${req.originalUrl} not found`,
+    error: `Route ${req.method} ${req.originalUrl} nebyla nalezena`,
   });
 });
 
@@ -92,5 +92,5 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 });
 
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+  console.log(`Server běží na portu ${port}`);
 });

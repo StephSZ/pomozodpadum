@@ -10,7 +10,7 @@ export async function getContainer(req: Request, res: Response) {
   const container = CONTAINERS.find((item) => item.type === req.params.type);
 
   if (!container) {
-    throw new NotFoundError("Container not found");
+    throw new NotFoundError("Kontejner nebyl nalezen");
   }
 
   res.json(container);

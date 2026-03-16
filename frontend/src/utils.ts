@@ -57,9 +57,9 @@ export function useAsyncData<T>(
       const cached = cacheKey ? readCache<T>(cacheKey) : null;
       if (cached) {
         setData(cached);
-        setError("Backend neni dostupny. Zobrazuji posledni ulozena data.");
+        setError("Backend není dostupný. Zobrazuji poslední uložená data.");
       } else {
-        setError(error instanceof Error ? error.message : "Nepodarilo se nacist data.");
+        setError(error instanceof Error ? error.message : "Nepodařilo se načíst data.");
       }
     } finally {
       setLoading(false);

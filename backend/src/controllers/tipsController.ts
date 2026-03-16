@@ -27,7 +27,7 @@ export async function getTodayTip(_req: Request, res: Response) {
   if (tips.length === 0) {
     res.status(404).json({
       success: false,
-      error: "No daily tips available",
+      error: "Denní tipy nejsou k dispozici",
     });
     return;
   }

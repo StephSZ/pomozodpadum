@@ -6,56 +6,56 @@ const dailyTips = [
   {
     id: "daily-tip-1",
     emoji: "💡",
-    title: "Vite, ze...?",
+    title: "Víte, že...?",
     content:
-      "Hlinikovou folii vycistete od zbytku jidla a pak patri do kontejneru na kovy.",
+      "Hliníkovou fólii vyčistěte od zbytků jídla a pak patří do kontejneru na kovy.",
     source: "samosebou.cz",
   },
   {
     id: "daily-tip-2",
     emoji: "♻️",
-    title: "Recyklacni tip",
+    title: "Recyklační tip",
     content:
-      "Z 30 PET lahvi se da vyrobit fleecova bunda. Seslapnete je a sundejte vicko!",
+      "Z 30 PET lahví se dá vyrobit fleecová bunda. Sešlápněte je a sundejte víčko!",
     source: "samosebou.cz",
   },
   {
     id: "daily-tip-3",
     emoji: "📦",
-    title: "Slozeny odpad",
+    title: "Složený odpad",
     content:
-      "Krabici od pizzy rozriznete. Cistou cast dejte do papiru, mastnou do smesneho odpadu.",
+      "Krabici od pizzy rozřízněte. Čistou část dejte do papíru, mastnou do směsného odpadu.",
     source: "samosebou.cz",
   },
   {
     id: "daily-tip-4",
     emoji: "🔋",
-    title: "Nebezpecny odpad",
+    title: "Nebezpečný odpad",
     content:
-      "Baterie nikdy nepatri do smesneho odpadu. Odevzdejte je na mistech zpetneho odberu.",
+      "Baterie nikdy nepatří do směsného odpadu. Odevzdejte je na místech zpětného odběru.",
     source: "samosebou.cz",
   },
   {
     id: "daily-tip-5",
     emoji: "🧴",
-    title: "Specialni odpad",
+    title: "Speciální odpad",
     content:
-      "Prepaleny olej nalijte do PET lahve a odevzdejte ho do sberu oleju.",
+      "Přepálený olej nalijte do PET lahve a odevzdejte ho do sběru olejů.",
     source: "samosebou.cz",
   },
   {
     id: "daily-tip-6",
     emoji: "👟",
-    title: "Textilni odpad",
+    title: "Textilní odpad",
     content:
-      "Funkcni boty patri do kontejneru na textil. Znacne znicene boty dejte do smesneho odpadu.",
+      "Funkční boty patří do kontejneru na textil. Značně zničené boty dejte do směsného odpadu.",
     source: "samosebou.cz",
   },
   {
     id: "daily-tip-7",
     emoji: "🌿",
     title: "Bio tip",
-    content: "Kavovy filtr i se sedlinou muzete dat do bioodpadu.",
+    content: "Kávový filtr i se sedlinou můžete dát do bioodpadu.",
     source: "samosebou.cz",
   },
 ] as const;

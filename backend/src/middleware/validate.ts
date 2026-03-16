@@ -28,7 +28,7 @@ export function sanitizeStringInput(
 
   if (typeof value !== "string") {
     if (required) {
-      throw new ValidationError("Expected a string value");
+      throw new ValidationError("Očekávána textová hodnota");
     }
 
     return undefined;
@@ -38,7 +38,7 @@ export function sanitizeStringInput(
 
   if (!sanitized) {
     if (required) {
-      throw new ValidationError("Required string value is empty");
+      throw new ValidationError("Povinná textová hodnota je prázdná");
     }
 
     return undefined;
@@ -53,7 +53,7 @@ export function isValidUuid(value: unknown): value is string {
 
 export function assertUuid(value: unknown, fieldName = "id") {
   if (!isValidUuid(value)) {
-    throw new ValidationError(`${fieldName} must be a valid UUID`);
+    throw new ValidationError(`Pole ${fieldName} musí být platné UUID`);
   }
 
   return value;
@@ -61,7 +61,7 @@ export function assertUuid(value: unknown, fieldName = "id") {
 
 export function assertContainerType(value: unknown, fieldName = "container") {
   if (!isValidContainerType(value)) {
-    throw new ValidationError(`${fieldName} must be a valid waste container type`);
+    throw new ValidationError(`Pole ${fieldName} musí být platný typ kontejneru`);
   }
 
   return value;

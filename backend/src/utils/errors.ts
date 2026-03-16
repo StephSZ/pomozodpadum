@@ -9,19 +9,19 @@ export class AppError extends Error {
 }
 
 export class AnalysisError extends AppError {
-  constructor(message = "Waste analysis failed") {
+  constructor(message = "Analýza odpadu selhala") {
     super(message, 422);
   }
 }
 
 export class ValidationError extends AppError {
-  constructor(message = "Invalid request") {
+  constructor(message = "Neplatný požadavek") {
     super(message, 400);
   }
 }
 
 export class NotFoundError extends AppError {
-  constructor(message = "Resource not found") {
+  constructor(message = "Zdroj nebyl nalezen") {
     super(message, 404);
   }
 }

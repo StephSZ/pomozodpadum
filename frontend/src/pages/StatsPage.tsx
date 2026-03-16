@@ -6,7 +6,7 @@ export function StatsPage() {
   const stats = useAsyncData(() => api.getStats(), { cacheKey: "stats-page" });
 
   if (stats.loading && !stats.data) {
-    return <LoadingState label="Nacitam statistiky..." />;
+    return <LoadingState label="Načítám statistiky..." />;
   }
 
   if (stats.error && !stats.data) {
@@ -22,23 +22,23 @@ export function StatsPage() {
   return (
     <div className="stack">
       <div className="grid grid--3">
-        <Card title="Celkem skenu">
+        <Card title="Celkem skenů">
           <strong className="big-number">{stats.data.totalScans}</strong>
         </Card>
-        <Card title="Za 7 dni">
+        <Card title="Za 7 dní">
           <strong className="big-number">{stats.data.weeklyScans}</strong>
         </Card>
         <Card title="Top kontejner">
           <strong className="big-number">
             {stats.data.topContainer
               ? `${stats.data.topContainer.container} (${stats.data.topContainer.count})`
-              : "zadny"}
+              : "žádný"}
           </strong>
         </Card>
       </div>
 
       <div className="grid grid--2">
-        <Card title="Aktivita za 7 dni">
+        <Card title="Aktivita za 7 dní">
           <div className="bar-chart">
             {stats.data.dailyActivity.map((item) => (
               <div className="bar-chart__item" key={item.date}>
@@ -53,7 +53,7 @@ export function StatsPage() {
           </div>
         </Card>
 
-        <Card title="Rozlozeni kontejneru">
+        <Card title="Rozložení kontejnerů">
           <div className="pie-list">
             {stats.data.containerDistribution.length ? (
               stats.data.containerDistribution.map((item) => (
@@ -71,7 +71,7 @@ export function StatsPage() {
                 </div>
               ))
             ) : (
-              <p>Zatim nejsou zadna data.</p>
+              <p>Zatím nejsou žádná data.</p>
             )}
           </div>
         </Card>

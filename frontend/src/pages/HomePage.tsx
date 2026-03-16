@@ -13,7 +13,7 @@ export function HomePage() {
   return (
     <div className="stack">
       <div className="grid grid--3">
-        <Card title="Dnesni tip">
+        <Card title="Denní tip">
           {tip.loading && !tip.data ? <LoadingState /> : null}
           {tip.error && !tip.data ? <ErrorState message={tip.error} onRetry={tip.reload} /> : null}
           {tip.data ? (
@@ -36,15 +36,15 @@ export function HomePage() {
             <div className="mini-stats">
               <div>
                 <strong>{stats.data.totalScans}</strong>
-                <span>celkem skenu</span>
+                <span>celkem skenů</span>
               </div>
               <div>
                 <strong>{stats.data.weeklyScans}</strong>
-                <span>za 7 dni</span>
+                <span>za 7 dní</span>
               </div>
               <div>
                 <strong>
-                  {stats.data.topContainer ? stats.data.topContainer.container : "zadny"}
+                  {stats.data.topContainer ? stats.data.topContainer.container : "žádný"}
                 </strong>
                 <span>top kontejner</span>
               </div>
@@ -52,7 +52,7 @@ export function HomePage() {
           ) : null}
         </Card>
 
-        <Card title="Posledni sken">
+        <Card title="Poslední sken">
           {latest.loading && !latest.data ? <LoadingState /> : null}
           {latest.error && !latest.data ? (
             <ErrorState message={latest.error} onRetry={latest.reload} />
@@ -68,8 +68,8 @@ export function HomePage() {
               </div>
             ) : (
               <div className="stack stack--tight">
-                <strong>Zacnete svuj prvni sken!</strong>
-                <p>Historie je prazdna a ceka na prvni analyzu.</p>
+                <strong>Začněte svůj první sken!</strong>
+                <p>Historie je prázdná a čeká na první analýzu.</p>
                 <Link className="button" to="/scan">
                   Skenuj odpad
                 </Link>

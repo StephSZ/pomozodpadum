@@ -175,7 +175,7 @@ export async function deleteWasteById(id: string) {
   });
 
   if (!existingRecord) {
-    throw new NotFoundError("Waste record not found");
+    throw new NotFoundError("Záznam odpadu nebyl nalezen");
   }
 
   await prisma.wasteRecord.delete({
@@ -201,7 +201,7 @@ export async function submitWasteCorrection(input: CorrectionInput) {
   });
 
   if (!existingRecord) {
-    throw new NotFoundError("Waste record not found");
+    throw new NotFoundError("Záznam odpadu nebyl nalezen");
   }
 
   const [correction, updatedRecord] = await prisma.$transaction([

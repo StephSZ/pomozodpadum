@@ -19,7 +19,7 @@ export function ScanPage() {
 
   async function handleAnalyze() {
     if (!file) {
-      setError("Vyberte prosim JPEG, PNG nebo WebP soubor.");
+      setError("Vyberte prosím soubor JPEG, PNG nebo WebP.");
       return;
     }
 
@@ -32,7 +32,7 @@ export function ScanPage() {
       const result = await api.analyzeWaste(formData);
       navigate(`/waste/${result.waste.id}`);
     } catch (error) {
-      setError(error instanceof Error ? error.message : "Analyza se nezdarila.");
+      setError(error instanceof Error ? error.message : "Analýza se nezdařila.");
     } finally {
       setLoading(false);
     }
@@ -49,7 +49,7 @@ export function ScanPage() {
             type="file"
           />
         </label>
-        {preview ? <img alt="Nahled odpadu" className="preview" src={preview} /> : null}
+        {preview ? <img alt="Náhled odpadu" className="preview" src={preview} /> : null}
         {error ? <ErrorState message={error} /> : null}
         <button className="button" disabled={loading} onClick={() => void handleAnalyze()}>
           {loading ? "Analyzuji..." : "Analyzovat"}

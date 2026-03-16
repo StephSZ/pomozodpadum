@@ -8,7 +8,7 @@ import { InfoPage } from "./pages/InfoPage";
 
 function Layout() {
   const items = [
-    { to: "/", label: "Domu" },
+    { to: "/", label: "Domů" },
     { to: "/scan", label: "Skenovat" },
     { to: "/history", label: "Historie" },
     { to: "/stats", label: "Statistiky" },
@@ -18,11 +18,11 @@ function Layout() {
   return (
     <div className="shell">
       <header className="hero">
-        <p className="hero__eyebrow">Pomoz Odpadum</p>
-        <h1>Prakticky AI pruvodce trideni odpadu</h1>
+        <p className="hero__eyebrow">Pomoz Odpadům</p>
+        <h1>Praktický AI průvodce třídění odpadu</h1>
         <p className="hero__text">
-          Vyfotte odpad, ziskejte doporuceni kontejneru, ulozte historii a
-          sledujte svoje tridici navyky.
+          Vyfoťte odpad, získejte doporučení kontejneru, uložte historii a sledujte své
+          třídicí návyky.
         </p>
       </header>
 

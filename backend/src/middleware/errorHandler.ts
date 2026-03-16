@@ -13,7 +13,7 @@ export function errorHandler(
   if (err instanceof MulterError) {
     const message =
       err.code === "LIMIT_FILE_SIZE"
-        ? "Uploaded file exceeds the 10MB limit"
+        ? "Nahraný soubor překračuje limit 10 MB"
         : err.message;
 
     res.status(400).json({
@@ -34,13 +34,13 @@ export function errorHandler(
   if (err instanceof SyntaxError) {
     res.status(400).json({
       success: false,
-      error: "Invalid JSON request body",
+      error: "Neplatné JSON tělo požadavku",
     });
     return;
   }
 
   res.status(500).json({
     success: false,
-    error: err.message || "Internal server error",
+    error: err.message || "Interní chyba serveru",
   });
 }

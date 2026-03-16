@@ -15,7 +15,7 @@ function validateBase64Image(image: string) {
 
   if (!match) {
     throw new ValidationError(
-      "Image must be a base64 data URL in JPEG, PNG, or WebP format",
+      "Obrázek musí být base64 data URL ve formátu JPEG, PNG nebo WebP",
     );
   }
 
@@ -24,11 +24,11 @@ function validateBase64Image(image: string) {
   const sizeInBytes = Buffer.byteLength(base64Data, "base64");
 
   if (!allowedMimeTypes.has(mimeType)) {
-    throw new ValidationError("Only JPEG, PNG, and WebP images are supported");
+    throw new ValidationError("Podporované jsou pouze obrázky JPEG, PNG a WebP");
   }
 
   if (sizeInBytes > maxFileSizeBytes) {
-    throw new ValidationError("Uploaded file exceeds the 10MB limit");
+    throw new ValidationError("Nahraný soubor překračuje limit 10 MB");
   }
 
   return image;
@@ -37,11 +37,11 @@ function validateBase64Image(image: string) {
 async function resolveImageFromRequest(req: Request) {
   if (req.file) {
     if (!allowedMimeTypes.has(req.file.mimetype)) {
-      throw new ValidationError("Only JPEG, PNG, and WebP images are supported");
+      throw new ValidationError("Podporované jsou pouze obrázky JPEG, PNG a WebP");
     }
 
     if (req.file.size > maxFileSizeBytes) {
-      throw new ValidationError("Uploaded file exceeds the 10MB limit");
+      throw new ValidationError("Nahraný soubor překračuje limit 10 MB");
     }
 
     const fileBuffer = await readFile(req.file.path);
@@ -55,7 +55,7 @@ async function resolveImageFromRequest(req: Request) {
   const image = (req.body as AnalyzeRequest | undefined)?.image;
 
   if (!image || typeof image !== "string") {
-    throw new ValidationError("Request must include an image upload or base64 image");
+    throw new ValidationError("Požadavek musí obsahovat nahraný obrázek nebo base64 obrázek");
   }
 
   return {

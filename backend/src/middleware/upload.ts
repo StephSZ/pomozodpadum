@@ -24,6 +24,6 @@ export const upload = multer({
       return;
     }
 
-    callback(new ValidationError("Only JPEG, PNG, and WebP files are allowed"));
+    callback(new ValidationError("Povolené jsou pouze soubory JPEG, PNG a WebP"));
   },
 });

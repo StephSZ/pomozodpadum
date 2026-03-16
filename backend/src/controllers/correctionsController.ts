@@ -27,7 +27,7 @@ export async function submitCorrection(req: Request, res: Response) {
 
   if (!correctedName && !correctedContainerValue) {
     throw new ValidationError(
-      "At least one of correctedName or correctedContainer must be provided",
+      "Musí být vyplněno alespoň correctedName nebo correctedContainer",
     );
   }
 

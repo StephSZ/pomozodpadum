@@ -60,7 +60,7 @@ export async function deleteHistoryItem(req: Request, res: Response) {
 
   res.json({
     success: true,
-    message: "Zaznam smazan",
+    message: "Záznam smazán",
   });
 }
 
@@ -73,7 +73,7 @@ export async function clearHistory(req: Request, res: Response) {
 
   res.json({
     success: true,
-    message: "Historie vymazana",
+    message: "Historie vymazána",
     deletedCount,
   });
 }

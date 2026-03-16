@@ -3,27 +3,27 @@ import OpenAI from "openai";
 import type { ContainerType, WasteItem } from "../types";
 import { AnalysisError, ValidationError } from "../utils/errors";
 
-const systemPrompt = `Jsi expert na trideni odpadu v Ceske republice. Uzivatel ti posle fotku odpadu.
+const systemPrompt = `Jsi expert na třídění odpadu v České republice. Uživatel ti pošle fotku odpadu.
 
-Tvym ukolem je:
-1. Rozpoznat predmet na fotce
-2. Precist etiketu, pokud je viditelna (OCR)
-3. Urcit do jakeho kontejneru nebo kontejneru odpad patri
+Tvým úkolem je:
+1. Rozpoznat předmět na fotce
+2. Přečíst etiketu, pokud je viditelná (OCR)
+3. Určit, do jakého kontejneru nebo kontejnerů odpad patří
 4. Poskytnout instrukce k likvidaci
 
 Kategorie kontejneru: plastic, paper, glass, mixed, bio, metal, hazardous, electro, carton
 
-Odpovez VYHRADNE jako validni JSON objekt bez markdown:
+Odpověz VÝHRADNĚ jako validní JSON objekt bez markdown:
 {
-  "name": "Nazev odpadu cesky",
-  "description": "Kratky popis cesky",
+  "name": "Název odpadu česky",
+  "description": "Krátký popis česky",
   "containers": ["primary_container", "optional_secondary"],
-  "primaryContainer": "hlavni kontejner",
-  "composition": "Z ceho se sklada",
-  "disposalInstructions": "Jak spravne vyhodit - instrukce cesky",
+  "primaryContainer": "hlavní kontejner",
+  "composition": "Z čeho se skládá",
+  "disposalInstructions": "Jak správně vyhodit - instrukce česky",
   "decompositionTime": "Doba rozkladu",
-  "funFact": "Zajimavost o tomto odpadu cesky",
-  "labelInfo": "Text z etikety pokud je citelny, jinak null",
+  "funFact": "Zajímavost o tomto odpadu česky",
+  "labelInfo": "Text z etikety pokud je čitelný, jinak null",
   "isHazardous": false,
   "similarWasteIds": []
 }`;
@@ -47,39 +47,39 @@ const mockWasteSamples: Array<
   >
 > = [
   {
-    name: "PET lahev",
-    description: "Plastova lahev od napoje vhodna do zluteho kontejneru.",
+    name: "PET láhev",
+    description: "Plastová láhev od nápoje vhodná do žlutého kontejneru.",
     containers: ["plastic"],
     primaryContainer: "plastic",
     composition: "PET plast",
-    disposalInstructions: "Vylijte zbytky, seslapnete a vyhodte do plastu.",
+    disposalInstructions: "Vylijte zbytky, sešlápněte a vyhoďte do plastu.",
     decompositionTime: "450 let",
-    funFact: "Z recyklovanych PET lahvi mohou vznikat textilni vlakna.",
-    labelInfo: "Napojova etiketa",
+    funFact: "Z recyklovaných PET lahví mohou vznikat textilní vlákna.",
+    labelInfo: "Nápojová etiketa",
     isHazardous: false,
   },
   {
-    name: "Plechovka od napoje",
-    description: "Hlinikova plechovka vhodna do sberu kovu.",
+    name: "Plechovka od nápoje",
+    description: "Hliníková plechovka vhodná do sběru kovů.",
     containers: ["metal"],
     primaryContainer: "metal",
-    composition: "Hlinik",
-    disposalInstructions: "Vyplachnete, seslapnete a odlozte do kontejneru na kov.",
+    composition: "Hliník",
+    disposalInstructions: "Vypláchněte, sešlápněte a odložte do kontejneru na kov.",
     decompositionTime: "200 let",
-    funFact: "Hlinik lze recyklovat opakovane s nizkou ztratou kvality.",
+    funFact: "Hliník lze recyklovat opakovaně s nízkou ztrátou kvality.",
     labelInfo: "Plechovka 0,33 l",
     isHazardous: false,
   },
   {
-    name: "Sklenena lahev",
-    description: "Sklenena lahev urcena do zeleneho kontejneru na sklo.",
+    name: "Skleněná láhev",
+    description: "Skleněná láhev určená do zeleného kontejneru na sklo.",
     containers: ["glass"],
     primaryContainer: "glass",
     composition: "Sklo",
-    disposalInstructions: "Sundejte uzaver a vyhodte lahev do skla.",
+    disposalInstructions: "Sundejte uzávěr a vyhoďte láhev do skla.",
     decompositionTime: "4000 let",
-    funFact: "Sklo je mozne recyklovat opakovane bez ztraty kvality.",
-    labelInfo: "Sklenena lahev",
+    funFact: "Sklo je možné recyklovat opakovaně bez ztráty kvality.",
+    labelInfo: "Skleněná láhev",
     isHazardous: false,
   },
 ];
@@ -122,11 +122,11 @@ function parseAiResponse(content: string): AiWastePayload {
   try {
     parsed = JSON.parse(content);
   } catch {
-    throw new AnalysisError("AI response was not valid JSON");
+    throw new AnalysisError("Odpověď AI nebyla validní JSON.");
   }
 
   if (!parsed || typeof parsed !== "object") {
-    throw new AnalysisError("AI response was not an object");
+    throw new AnalysisError("Odpověď AI neměla očekávaný objekt.");
   }
 
   const candidate = parsed as Record<string, unknown>;
@@ -146,11 +146,11 @@ function parseAiResponse(content: string): AiWastePayload {
     !Array.isArray(candidate.similarWasteIds) ||
     !candidate.similarWasteIds.every((item) => typeof item === "string")
   ) {
-    throw new AnalysisError("AI response was missing required fields");
+    throw new AnalysisError("Odpověď AI neobsahovala všechna povinná pole.");
   }
 
   if (candidate.containers.length === 0) {
-    throw new AnalysisError("AI response did not include any containers");
+    throw new AnalysisError("Odpověď AI neobsahovala žádný kontejner.");
   }
 
   return {
@@ -194,7 +194,7 @@ export async function analyzeWasteImage(imageBase64: string): Promise<WasteItem>
             content: [
               {
                 type: "text",
-                text: "Analyzuj tuto fotku odpadu a vrat pozadovany JSON.",
+                text: "Analyzuj tuto fotku odpadu a vrať požadovaný JSON.",
               },
               {
                 type: "image_url",
@@ -210,7 +210,7 @@ export async function analyzeWasteImage(imageBase64: string): Promise<WasteItem>
       const messageContent = response.choices[0]?.message?.content;
 
       if (!messageContent) {
-        throw new AnalysisError("AI response was empty");
+        throw new AnalysisError("Odpověď AI byla prázdná.");
       }
 
       const parsed = parseAiResponse(messageContent);
@@ -225,7 +225,7 @@ export async function analyzeWasteImage(imageBase64: string): Promise<WasteItem>
       };
     } catch (error) {
       lastError =
-        error instanceof Error ? error : new AnalysisError("Unknown AI analysis error");
+        error instanceof Error ? error : new AnalysisError("Nastala neznámá chyba AI analýzy.");
     }
   }
 
@@ -233,5 +233,5 @@ export async function analyzeWasteImage(imageBase64: string): Promise<WasteItem>
     throw lastError;
   }
 
-  throw new AnalysisError(lastError?.message ?? "Waste analysis failed");
+  throw new AnalysisError(lastError?.message ?? "Analýza odpadu selhala.");
 }

@@ -48,13 +48,13 @@ export function WastePage() {
           | undefined,
       });
       waste.setData(result.updatedWaste);
-      setToast("Diky za opravu!");
+      setToast("Díky za opravu!");
       setShowCorrection(false);
       setCorrectionName("");
       setCorrectionContainer("");
     } catch (error) {
       setCorrectionError(
-        error instanceof Error ? error.message : "Korekci se nepodarilo odeslat.",
+        error instanceof Error ? error.message : "Korekci se nepodařilo odeslat.",
       );
     } finally {
       setCorrectionLoading(false);
@@ -62,11 +62,11 @@ export function WastePage() {
   }
 
   if (!id) {
-    return <ErrorState message="Chybi ID odpadu." />;
+    return <ErrorState message="Chybí ID odpadu." />;
   }
 
   if (waste.loading && !waste.data) {
-    return <LoadingState label="Nacitam detail odpadu..." />;
+    return <LoadingState label="Načítám detail odpadu..." />;
   }
 
   if (waste.error && !waste.data) {
@@ -84,8 +84,11 @@ export function WastePage() {
         title={waste.data.name}
         action={
           <div className="row">
-            <button className="button button--secondary" onClick={() => setToast("Zaznam uz je ulozen na serveru.")}>
-              Ulozit
+            <button
+              className="button button--secondary"
+              onClick={() => setToast("Záznam už je uložen na serveru.")}
+            >
+              Uložit
             </button>
             <button className="button" onClick={() => setShowCorrection((value) => !value)}>
               Opravit
@@ -105,11 +108,11 @@ export function WastePage() {
             <p>{waste.data.disposalInstructions}</p>
           </details>
           <details>
-            <summary>Z ceho se sklada</summary>
+            <summary>Z čeho se skládá</summary>
             <p>{waste.data.composition}</p>
           </details>
           <details>
-            <summary>Doba rozkladu a zajimavost</summary>
+            <summary>Doba rozkladu a zajímavost</summary>
             <p>{waste.data.decompositionTime}</p>
             <p>{waste.data.funFact}</p>
           </details>
@@ -117,25 +120,25 @@ export function WastePage() {
       </Card>
 
       {showCorrection ? (
-        <Card title="Opravit rozpoznani">
+        <Card title="Opravit rozpoznání">
           <div className="stack">
             <input
               onChange={(event) => setCorrectionName(event.target.value)}
-              placeholder="Novy nazev"
+              placeholder="Nový název"
               value={correctionName}
             />
             <select
               onChange={(event) => setCorrectionContainer(event.target.value)}
               value={correctionContainer}
             >
-              <option value="">Bez zmeny kontejneru</option>
+              <option value="">Bez změny kontejneru</option>
               <option value="plastic">Plast</option>
-              <option value="paper">Papir</option>
+              <option value="paper">Papír</option>
               <option value="glass">Sklo</option>
-              <option value="mixed">Smesny</option>
+              <option value="mixed">Směsný</option>
               <option value="bio">Bio</option>
               <option value="metal">Kov</option>
-              <option value="hazardous">Nebezpecny</option>
+              <option value="hazardous">Nebezpečný</option>
               <option value="electro">Elektro</option>
               <option value="carton">Karton</option>
             </select>
@@ -145,21 +148,21 @@ export function WastePage() {
                 className="button button--secondary"
                 onClick={() => setShowCorrection(false)}
               >
-                Zrusit
+                Zrušit
               </button>
               <button
                 className="button"
                 disabled={correctionLoading}
                 onClick={() => void submitCorrection()}
               >
-                {correctionLoading ? "Odesilam..." : "Odeslat"}
+                {correctionLoading ? "Odesílám..." : "Odeslat"}
               </button>
             </div>
           </div>
         </Card>
       ) : null}
 
-      <Card title="Podobne odpady">
+      <Card title="Podobné odpady">
         {similar.loading && !similar.data?.length ? <LoadingState /> : null}
         {similar.error && !similar.data?.length ? (
           <ErrorState message={similar.error} onRetry={similar.reload} />
@@ -174,7 +177,7 @@ export function WastePage() {
             ))}
           </div>
         ) : (
-          !similar.loading && <p>Zatim nejsou k dispozici podobne odpady.</p>
+          !similar.loading && <p>Zatím nejsou k dispozici podobné odpady.</p>
         )}
       </Card>
     </div>

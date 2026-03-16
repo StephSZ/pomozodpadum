@@ -19,7 +19,7 @@ export function Card({
   );
 }
 
-export function LoadingState({ label = "Nacitam..." }: { label?: string }) {
+export function LoadingState({ label = "Načítám..." }: { label?: string }) {
   return (
     <div className="state state--loading">
       <div className="spinner" />
@@ -49,12 +49,12 @@ export function ErrorState({
 
 const labels: Record<ContainerType, string> = {
   plastic: "Plast",
-  paper: "Papir",
+  paper: "Papír",
   glass: "Sklo",
-  mixed: "Smesny",
+  mixed: "Směsný",
   bio: "Bio",
   metal: "Kov",
-  hazardous: "Nebezpecny",
+  hazardous: "Nebezpečný",
   electro: "Elektro",
   carton: "Karton",
 };

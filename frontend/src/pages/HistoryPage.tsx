@@ -31,12 +31,12 @@ export function HistoryPage() {
         <div className="stack stack--tight">
           <input
             onChange={(event) => setSearch(event.target.value)}
-            placeholder="Vyhledat podle nazvu"
+            placeholder="Vyhledat podle názvu"
             value={search}
           />
           <div className="row row--wrap">
             <button className={container === "" ? "chip chip--active" : "chip"} onClick={() => setContainer("")}>
-              Vse
+              Vše
             </button>
             {["plastic", "paper", "glass", "mixed", "bio", "metal", "hazardous", "electro", "carton"].map((value) => (
               <button
@@ -51,7 +51,7 @@ export function HistoryPage() {
         </div>
       </Card>
 
-      {history.loading && !history.data ? <LoadingState label="Nacitam historii..." /> : null}
+      {history.loading && !history.data ? <LoadingState label="Načítám historii..." /> : null}
       {history.error && !history.data ? (
         <ErrorState message={history.error} onRetry={history.reload} />
       ) : null}
@@ -78,7 +78,7 @@ export function HistoryPage() {
           ))
         ) : (
           <Card title="Historie">
-            <p>Historie je prazdna.</p>
+            <p>Historie je prázdná.</p>
           </Card>
         )
       ) : null}
