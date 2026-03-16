@@ -1,7 +1,7 @@
 # Backend Agents
 
 ## Tech stack
-Node.js, Express, TypeScript, SQLite, Prisma ORM, Multer pro upload souboru a OpenAI API pro analyzu obrazku. Pro AI analyzu je planovany model GPT-4o.
+Node.js, Express, TypeScript, SQLite, Prisma ORM, Multer pro upload souboru a OpenAI API pro analyzu obrazku. AI analyza pouziva GPT-4o nebo mock rezim bez klice.
 
 ## Spusteni
 `npm install && npx prisma generate && npx prisma db push && npm run dev` -> `http://localhost:3001`
@@ -14,7 +14,7 @@ Z korene repozitare lze pouzit `npm run dev` pro soubezny start backendu a front
 - Z korene repozitare lze pouzit `npm run build` pro build backendu i frontendu
 
 ## Stav API
-Aktualne je implementovany server v [backend/src/index.ts](C:\Users\shura\pomozodpadum\backend\src\index.ts) a endpoint [backend/src/routes/health.ts](C:\Users\shura\pomozodpadum\backend\src\routes\health.ts). Nize uvedena tabulka kombinuje existujici endpointy a planovane MVP endpointy, ktere maji byt pri rozsireni backendu doplneny.
+Backend je funkcni REST API. Server je v [backend/src/index.ts](C:\Users\shura\pomozodpadum\backend\src\index.ts) a endpointy jsou rozdelene do `src/routes/`, `src/controllers/` a `src/services/`.
 
 ## Struktura API endpointu
 | Metoda | Endpoint | Popis |
@@ -30,6 +30,8 @@ Aktualne je implementovany server v [backend/src/index.ts](C:\Users\shura\pomozo
 | GET | /api/stats | Statistiky uzivatele |
 | GET | /api/containers | Pruvodce trideni - vsechny kontejnery |
 | GET | /api/containers/:type | Detail kontejneru |
+| DELETE | /api/history | Smazani cele historie pri `confirm=true` |
+| GET | /api/corrections | Seznam korekci |
 
 ## Databazove schema
 - `WasteRecord`: uklada rozpoznany odpad, primarni kontejner, popis, obrazek, instrukce, slozeni, zabavny fakt, podobne odpady a cas skenu.
@@ -52,6 +54,9 @@ Schma je definovane v [backend/prisma/schema.prisma](C:\Users\shura\pomozodpadum
 - `FRONTEND_URL`
 
 Pouzivej pouze environment variables. NIKDY necommituj `.env`, API klice ani jine secrets. Sabona patri do `.env.example`.
+
+## Mock rezim
+Pokud `OPENAI_API_KEY` chybi nebo ma sablonovou hodnotu, `src/services/aiService.ts` vraci mock analyzu odpadu. To se pouziva pro lokalni testovani bez pristupu k OpenAI API.
 
 ## Security middleware
 - `helmet` pridava bezpecnostni HTTP hlavicky

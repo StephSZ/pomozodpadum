@@ -40,6 +40,50 @@ const validContainers: ContainerType[] = [
   "carton",
 ];
 
+const mockWasteSamples: Array<
+  Omit<
+    WasteItem,
+    "id" | "imageUrl" | "scannedAt" | "userCorrected" | "similarWasteIds"
+  >
+> = [
+  {
+    name: "PET lahev",
+    description: "Plastova lahev od napoje vhodna do zluteho kontejneru.",
+    containers: ["plastic"],
+    primaryContainer: "plastic",
+    composition: "PET plast",
+    disposalInstructions: "Vylijte zbytky, seslapnete a vyhodte do plastu.",
+    decompositionTime: "450 let",
+    funFact: "Z recyklovanych PET lahvi mohou vznikat textilni vlakna.",
+    labelInfo: "Napojova etiketa",
+    isHazardous: false,
+  },
+  {
+    name: "Plechovka od napoje",
+    description: "Hlinikova plechovka vhodna do sberu kovu.",
+    containers: ["metal"],
+    primaryContainer: "metal",
+    composition: "Hlinik",
+    disposalInstructions: "Vyplachnete, seslapnete a odlozte do kontejneru na kov.",
+    decompositionTime: "200 let",
+    funFact: "Hlinik lze recyklovat opakovane s nizkou ztratou kvality.",
+    labelInfo: "Plechovka 0,33 l",
+    isHazardous: false,
+  },
+  {
+    name: "Sklenena lahev",
+    description: "Sklenena lahev urcena do zeleneho kontejneru na sklo.",
+    containers: ["glass"],
+    primaryContainer: "glass",
+    composition: "Sklo",
+    disposalInstructions: "Sundejte uzaver a vyhodte lahev do skla.",
+    decompositionTime: "4000 let",
+    funFact: "Sklo je mozne recyklovat opakovane bez ztraty kvality.",
+    labelInfo: "Sklenena lahev",
+    isHazardous: false,
+  },
+];
+
 type AiWastePayload = Pick<
   WasteItem,
   | "name"
@@ -57,6 +101,19 @@ type AiWastePayload = Pick<
 
 function isContainerType(value: unknown): value is ContainerType {
   return typeof value === "string" && validContainers.includes(value as ContainerType);
+}
+
+function createMockWaste(): WasteItem {
+  const mock = mockWasteSamples[Math.floor(Math.random() * mockWasteSamples.length)];
+
+  return {
+    ...mock,
+    id: randomUUID(),
+    imageUrl: "",
+    scannedAt: new Date().toISOString(),
+    userCorrected: false,
+    similarWasteIds: [],
+  };
 }
 
 function parseAiResponse(content: string): AiWastePayload {
@@ -115,7 +172,7 @@ export async function analyzeWasteImage(imageBase64: string): Promise<WasteItem>
   const openAiApiKey = process.env.OPENAI_API_KEY;
 
   if (!openAiApiKey || openAiApiKey === "your_openai_api_key_here") {
-    throw new ValidationError("OPENAI_API_KEY is not configured");
+    return createMockWaste();
   }
 
   const openai = new OpenAI({ apiKey: openAiApiKey });

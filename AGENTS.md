@@ -6,7 +6,7 @@ Pomoz Odpadum je mobilne orientovana webova aplikace pro rozpoznavani odpadu z f
 ## Struktura repozitare
 ```text
 /
- frontend/          # React + Vite + TypeScript + Tailwind CSS
+ frontend/          # React + Vite + TypeScript
  backend/           # Node.js + Express + TypeScript + SQLite (Prisma)
  AGENTS.md          # Tento soubor - prehled projektu
  .gitignore
@@ -42,8 +42,8 @@ Backend pouziva REST API s prefixem `/api/`, komunikace probiha pres JSON a CORS
 Sdilene typy jsou definovany v [backend/src/types/index.ts](C:\Users\shura\pomozodpadum\backend\src\types\index.ts). Klicove typy jsou `ContainerType`, `WasteItem`, `DailyTip` a `UserCorrection`.
 
 ## Poznamky ke stavu projektu
-- `frontend/` je aktualne minimalni Vite + React aplikace; cilova struktura je popsana detailne v [frontend/AGENTS.md](C:\Users\shura\pomozodpadum\frontend\AGENTS.md).
-- `backend/` ma aktualne implementovanou API vrstvu, rate limiting, `helmet`, validaci vstupu a produkcni build. Detaily jsou v [backend/AGENTS.md](C:\Users\shura\pomozodpadum\backend\AGENTS.md).
+- `frontend/` obsahuje funkcni SPA s routami `/`, `/scan`, `/waste/:id`, `/history`, `/stats` a `/info`. Detaily jsou v [frontend/AGENTS.md](C:\Users\shura\pomozodpadum\frontend\AGENTS.md).
+- `backend/` obsahuje kompleti REST API, mock rezim bez OpenAI klice, rate limiting, `helmet`, validaci vstupu a produkcni build. Detaily jsou v [backend/AGENTS.md](C:\Users\shura\pomozodpadum\backend\AGENTS.md).
 
 ## Udrzba dokumentace
 Pokud pridas novou funkci, endpoint nebo zmenis strukturu projektu, aktualizuj prislusny `AGENTS.md` soubor.
