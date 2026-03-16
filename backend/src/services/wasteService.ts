@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import type { ContainerType, WasteItem } from "../types";
+import { NotFoundError } from "../utils/errors";
 
 const prisma = new PrismaClient();
 
@@ -42,6 +43,20 @@ function mapRecordToWasteItem(record: {
     scannedAt: record.scannedAt.toISOString(),
     userCorrected: record.userCorrected,
   };
+}
+
+export interface HistoryQueryOptions {
+  search?: string;
+  container?: ContainerType;
+  page: number;
+  limit: number;
+}
+
+export interface HistoryQueryResult {
+  items: WasteItem[];
+  total: number;
+  page: number;
+  totalPages: number;
 }
 
 export async function saveWasteRecord(waste: WasteItem): Promise<WasteItem> {
@@ -95,4 +110,62 @@ export async function findSimilarWaste(
   });
 
   return records.map(mapRecordToWasteItem);
+}
+
+export async function getWasteHistory(
+  options: HistoryQueryOptions,
+): Promise<HistoryQueryResult> {
+  const where = {
+    ...(options.search
+      ? {
+          name: {
+            contains: options.search,
+          },
+        }
+      : {}),
+    ...(options.container
+      ? {
+          primaryContainer: options.container,
+        }
+      : {}),
+  };
+
+  const [total, records] = await Promise.all([
+    prisma.wasteRecord.count({ where }),
+    prisma.wasteRecord.findMany({
+      where,
+      orderBy: {
+        scannedAt: "desc",
+      },
+      skip: (options.page - 1) * options.limit,
+      take: options.limit,
+    }),
+  ]);
+
+  return {
+    items: records.map(mapRecordToWasteItem),
+    total,
+    page: options.page,
+    totalPages: total === 0 ? 0 : Math.ceil(total / options.limit),
+  };
+}
+
+export async function deleteWasteById(id: string) {
+  const existingRecord = await prisma.wasteRecord.findUnique({
+    where: { id },
+    select: { id: true },
+  });
+
+  if (!existingRecord) {
+    throw new NotFoundError("Waste record not found");
+  }
+
+  await prisma.wasteRecord.delete({
+    where: { id },
+  });
+}
+
+export async function clearWasteHistory() {
+  const result = await prisma.wasteRecord.deleteMany();
+  return result.count;
 }

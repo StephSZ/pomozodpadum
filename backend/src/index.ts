@@ -4,6 +4,7 @@ import express, { type NextFunction, type Request, type Response } from "express
 import analyzeRouter from "./routes/analyze";
 import { errorHandler } from "./middleware/errorHandler";
 import healthRouter from "./routes/health";
+import historyRouter from "./routes/history";
 import tipsRouter from "./routes/tips";
 import wasteRouter from "./routes/waste";
 
@@ -32,6 +33,7 @@ app.use("/api/health", healthRouter);
 app.use("/api/tips", tipsRouter);
 app.use("/api/analyze", analyzeRouter);
 app.use("/api/waste", wasteRouter);
+app.use("/api/history", historyRouter);
 
 app.use((req: Request, res: Response) => {
   res.status(404).json({
