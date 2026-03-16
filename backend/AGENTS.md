@@ -13,12 +13,13 @@ Aktualne je implementovany server v [backend/src/index.ts](C:\Users\shura\pomozo
 | Metoda | Endpoint | Popis |
 |--------|----------|-------|
 | GET | /api/health | Health check |
-| POST | /api/analyze | Analyza fotky odpadu (AI), planovano |
-| GET | /api/waste/:id | Detail odpadu, planovano |
+| POST | /api/analyze | Analyza fotky odpadu (AI) |
+| GET | /api/waste/:id | Detail odpadu |
 | GET | /api/history | Seznam historie skenu, planovano |
 | DELETE | /api/history/:id | Smazani zaznamu z historie, planovano |
 | POST | /api/corrections | Odeslani korekce, planovano |
-| GET | /api/tips/today | Denni tip, planovano |
+| GET | /api/tips/today | Denni tip |
+| GET | /api/tips | Seznam vsech tipu |
 | GET | /api/stats | Statistiky uzivatele, planovano |
 
 ## Databazove schema

@@ -1,6 +1,7 @@
 import { randomUUID } from "crypto";
 import multer from "multer";
 import path from "path";
+import { ValidationError } from "../utils/errors";
 
 const allowedMimeTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
 
@@ -23,6 +24,6 @@ export const upload = multer({
       return;
     }
 
-    callback(new Error("Only JPEG, PNG, and WebP files are allowed"));
+    callback(new ValidationError("Only JPEG, PNG, and WebP files are allowed"));
   },
 });
