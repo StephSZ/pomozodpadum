@@ -36,6 +36,7 @@ export interface DailyTip {
 }
 
 export interface UserCorrection {
+  id?: string;
   wasteId: string;
   correctedName?: string;
   correctedContainer?: ContainerType;

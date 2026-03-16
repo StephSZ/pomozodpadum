@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import type { ContainerType, WasteItem } from "../types";
+import type { ContainerType, UserCorrection, WasteItem } from "../types";
 import { NotFoundError } from "../utils/errors";
 
 const prisma = new PrismaClient();
@@ -42,6 +42,24 @@ function mapRecordToWasteItem(record: {
     similarWasteIds: parseStringArray(record.similarWasteIds),
     scannedAt: record.scannedAt.toISOString(),
     userCorrected: record.userCorrected,
+  };
+}
+
+function mapCorrectionToDto(record: {
+  id: string;
+  wasteId: string;
+  correctedName: string | null;
+  correctedContainer: string | null;
+  note: string | null;
+  submittedAt: Date;
+}): UserCorrection {
+  return {
+    id: record.id,
+    wasteId: record.wasteId,
+    correctedName: record.correctedName ?? undefined,
+    correctedContainer: (record.correctedContainer as ContainerType | null) ?? undefined,
+    note: record.note ?? undefined,
+    submittedAt: record.submittedAt.toISOString(),
   };
 }
 
@@ -168,4 +186,60 @@ export async function deleteWasteById(id: string) {
 export async function clearWasteHistory() {
   const result = await prisma.wasteRecord.deleteMany();
   return result.count;
+}
+
+export interface CorrectionInput {
+  wasteId: string;
+  correctedName?: string;
+  correctedContainer?: ContainerType;
+  note?: string;
+}
+
+export async function submitWasteCorrection(input: CorrectionInput) {
+  const existingRecord = await prisma.wasteRecord.findUnique({
+    where: { id: input.wasteId },
+  });
+
+  if (!existingRecord) {
+    throw new NotFoundError("Waste record not found");
+  }
+
+  const [correction, updatedRecord] = await prisma.$transaction([
+    prisma.userCorrection.create({
+      data: {
+        wasteId: input.wasteId,
+        correctedName: input.correctedName ?? null,
+        correctedContainer: input.correctedContainer ?? null,
+        note: input.note ?? null,
+      },
+    }),
+    prisma.wasteRecord.update({
+      where: { id: input.wasteId },
+      data: {
+        userCorrected: true,
+        ...(input.correctedName ? { name: input.correctedName } : {}),
+        ...(input.correctedContainer
+          ? {
+              primaryContainer: input.correctedContainer,
+              containers: JSON.stringify([input.correctedContainer]),
+            }
+          : {}),
+      },
+    }),
+  ]);
+
+  return {
+    correction: mapCorrectionToDto(correction),
+    updatedWaste: mapRecordToWasteItem(updatedRecord),
+  };
+}
+
+export async function getAllCorrections(): Promise<UserCorrection[]> {
+  const corrections = await prisma.userCorrection.findMany({
+    orderBy: {
+      submittedAt: "desc",
+    },
+  });
+
+  return corrections.map(mapCorrectionToDto);
 }

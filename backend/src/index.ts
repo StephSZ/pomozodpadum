@@ -2,6 +2,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express, { type NextFunction, type Request, type Response } from "express";
 import analyzeRouter from "./routes/analyze";
+import correctionsRouter from "./routes/corrections";
 import { errorHandler } from "./middleware/errorHandler";
 import healthRouter from "./routes/health";
 import historyRouter from "./routes/history";
@@ -34,6 +35,7 @@ app.use("/api/tips", tipsRouter);
 app.use("/api/analyze", analyzeRouter);
 app.use("/api/waste", wasteRouter);
 app.use("/api/history", historyRouter);
+app.use("/api/corrections", correctionsRouter);
 
 app.use((req: Request, res: Response) => {
   res.status(404).json({
