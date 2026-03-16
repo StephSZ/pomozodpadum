@@ -1,0 +1,43 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model WasteRecord {
+  id                   String   @id @default(uuid())
+  name                 String
+  description          String
+  containers           String
+  primaryContainer     String
+  imageUrl             String
+  composition          String
+  disposalInstructions String
+  decompositionTime    String
+  funFact              String
+  labelInfo            String?
+  isHazardous          Boolean  @default(false)
+  similarWasteIds      String
+  scannedAt            DateTime @default(now())
+  userCorrected        Boolean  @default(false)
+}
+
+model UserCorrection {
+  id                 String   @id @default(uuid())
+  wasteId            String
+  correctedName      String?
+  correctedContainer String?
+  note               String?
+  submittedAt        DateTime @default(now())
+}
+
+model DailyTip {
+  id      String  @id @default(uuid())
+  title   String
+  content String
+  emoji   String
+  source  String?
+}
