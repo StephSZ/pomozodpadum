@@ -46,6 +46,22 @@ export interface DailyTip {
   source?: string;
 }
 
+export type TipType = "daily" | "seasonal";
+
+export type Season = "spring" | "summer" | "autumn" | "winter";
+
+export interface TipResponse extends DailyTip {
+  type: TipType;
+  season: Season | null;
+  aiGenerated: boolean;
+}
+
+export interface SeasonalTipsResponse {
+  season: Season;
+  aiGenerated: boolean;
+  tips: TipResponse[];
+}
+
 export interface UserCorrection {
   id?: string;
   wasteId: string;

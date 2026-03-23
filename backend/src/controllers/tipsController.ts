@@ -1,5 +1,11 @@
 import { PrismaClient } from "@prisma/client";
 import type { Request, Response } from "express";
+import type { TipResponse } from "../types";
+import {
+  getSeasonalTipForDay,
+  getSeasonalTips,
+  isSeasonalTipDay,
+} from "../services/seasonalTipsService";
 
 const prisma = new PrismaClient();
 
@@ -18,6 +24,14 @@ export async function getAllTips(_req: Request, res: Response) {
 }
 
 export async function getTodayTip(_req: Request, res: Response) {
+  const now = new Date();
+
+  if (isSeasonalTipDay(now)) {
+    const seasonalTips = await getSeasonalTips(now);
+    res.json(getSeasonalTipForDay(seasonalTips, now));
+    return;
+  }
+
   const tips = await prisma.dailyTip.findMany({
     orderBy: {
       id: "asc",
@@ -32,7 +46,20 @@ export async function getTodayTip(_req: Request, res: Response) {
     return;
   }
 
-  const todayIndex = getMondayBasedDayIndex(new Date()) % tips.length;
+  const todayIndex = getMondayBasedDayIndex(now) % tips.length;
+  const todayTip = tips[todayIndex];
+  const tip: TipResponse = {
+    ...todayTip,
+    source: todayTip.source ?? undefined,
+    type: "daily",
+    season: null,
+    aiGenerated: false,
+  };
 
-  res.json(tips[todayIndex]);
+  res.json(tip);
+}
+
+export async function getCurrentSeasonalTips(_req: Request, res: Response) {
+  const seasonalTips = await getSeasonalTips();
+  res.json(seasonalTips);
 }

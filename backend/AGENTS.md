@@ -1,7 +1,7 @@
 # Backend Agents
 
 ## Tech stack
-Node.js, Express, TypeScript, SQLite, Prisma ORM, Multer pro upload souboru a LLM adapter vrstvu s vychozim OpenAI providerem pro analyzu obrazku. AI analyza pouziva OpenAI nebo mock rezim bez klice.
+Node.js, Express, TypeScript, SQLite, Prisma ORM, Multer pro upload souboru a LLM adapter vrstvu s vychozim OpenAI providerem pro analyzu obrazku. AI analyza pouziva OpenAI nebo mock rezim bez klice. Stejna LLM abstrakce slouzi i pro generovani sezonnich tipu trideni odpadu.
 
 ## Spusteni
 `npm install && npx prisma generate && npx prisma db push && npm run dev` -> `http://localhost:3001`
@@ -18,6 +18,7 @@ Backend je funkcni REST API. Server je v [backend/src/index.ts](C:\Users\shura\p
 
 ## LLM architektura
 - `src/services/aiService.ts` obsahuje domenovou logiku analyzy odpadu a je jedine misto, ktere vola LLM service.
+- `src/services/seasonalTipsService.ts` generuje 5 sezonnich tipu pro aktualni rocni obdobi, uklada je do 24h in-memory cache a pri chybe nebo chybejici konfiguraci vraci fallback data.
 - `src/services/llm/llmService.ts` vraci aktivni implementaci LLM adapteru.
 - `src/services/llm/openAiLlmAdapter.ts` obsahuje jedinou primou integraci na OpenAI SDK.
 - Provider-specific konfigurace se nacita z environment variables `OPENAI_API_KEY`, `OPENAI_MODEL`, `OPENAI_TEMPERATURE` a `OPENAI_MAX_TOKENS`.
@@ -33,7 +34,8 @@ Backend je funkcni REST API. Server je v [backend/src/index.ts](C:\Users\shura\p
 | GET | /api/history | Seznam historie skenu |
 | DELETE | /api/history/:id | Smazani zaznamu z historie |
 | POST | /api/corrections | Odeslani korekce |
-| GET | /api/tips/today | Denni tip |
+| GET | /api/tips/today | Stridave denni nebo sezonni tip pro dnes |
+| GET | /api/tips/seasonal | 5 sezonnich tipu pro aktualni obdobi |
 | GET | /api/tips | Seznam vsech tipu |
 | GET | /api/stats | Statistiky uzivatele |
 | GET | /api/containers | Pruvodce trideni - vsechny kontejnery |
@@ -47,6 +49,7 @@ Backend je funkcni REST API. Server je v [backend/src/index.ts](C:\Users\shura\p
 - `WasteRecord`: uklada rozpoznany odpad, primarni kontejner, popis, obrazek, instrukce, slozeni, zabavny fakt, podobne odpady a cas skenu.
 - `UserCorrection`: uklada uzivatelske korekce rozpoznani odpadu a kontejneru.
 - `DailyTip`: uklada edukacni denni tipy pro uzivatele.
+- Sezonni tipy se neukladaji do databaze. Zdroj je LLM + 24h cache + fallback data v `src/data/seasonalTips.ts`.
 
 Schma je definovane v [backend/prisma/schema.prisma](C:\Users\shura\pomozodpadum\backend\prisma\schema.prisma).
 
@@ -69,7 +72,7 @@ Schma je definovane v [backend/prisma/schema.prisma](C:\Users\shura\pomozodpadum
 Pouzivej pouze environment variables. NIKDY necommituj `.env`, API klice ani jine secrets. Sabona patri do `.env.example`.
 
 ## Mock rezim
-Pokud `OPENAI_API_KEY` chybi nebo ma sablonovou hodnotu, `src/services/aiService.ts` vraci mock analyzu odpadu. To se pouziva pro lokalni testovani bez pristupu k LLM providerovi.
+Pokud `OPENAI_API_KEY` chybi nebo ma sablonovou hodnotu, `src/services/aiService.ts` vraci mock analyzu odpadu. Sezonni tipy v tomtez rezimu pouziji staticky fallback dataset rozdeleny po 5 tipech pro jaro, leto, podzim a zimu.
 
 ## Security middleware
 - `helmet` pridava bezpecnostni HTTP hlavicky

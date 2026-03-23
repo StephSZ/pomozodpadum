@@ -22,14 +22,14 @@ Frontend je funkcni SPA nad backend API. Vstup je v [frontend/src/main.tsx](C:\U
 - `types.ts` - frontend typy odpovidajici backend API
 
 ## Stranky a routy
-- `/` - domovska stranka s dennim tipem, statistikami a poslednim skenem
+- `/` - domovska stranka s dennim nebo sezonim tipem z `/api/tips/today`, statistikami a poslednim skenem
 - `/scan` - skenovani nebo nahrani fotky
 - `/waste/:id` - detail odpadu
 - `/history` - historie skenu
 - `/stats` - statistiky
 - `/map` - mapa kontejnerů z KamTridit.cz s fallback odkazem do nového okna
 - `/catalog` - katalog odpadů s fulltextem, abecedou a kategoriovými filtry
-- `/info` - informace a pruvodce trideni
+- `/info` - informace, pruvodce trideni a sezonnich 5 tipu z `/api/tips/seasonal`
 
 ## Konvence pojmenovani
 - PascalCase pro React komponenty
@@ -40,7 +40,7 @@ Frontend je funkcni SPA nad backend API. Vstup je v [frontend/src/main.tsx](C:\U
 Sdilena data se nactou pres API a lehka cache je ulozena do `localStorage`, aby frontend umel zobrazit posledni data i pri docasnem vypadku backendu.
 
 ## Mock data
-Frontend nema vlastni mock datasety. Mock rezim je resen na backendu: bez `OPENAI_API_KEY` vraci `/api/analyze` mock odpad.
+Frontend nema vlastni mock datasety. Mock rezim je resen na backendu: bez `OPENAI_API_KEY` vraci `/api/analyze` mock odpad a `/api/tips/seasonal` fallback sezonni tipy.
 
 ## API integrace
 Soubor [frontend/src/lib/api.ts](C:\Users\shura\pomozodpadum\frontend\src\lib\api.ts) obsahuje volani vsech backend endpointu. Stranky nacitaji data pres API a zobrazuji loading, error i empty states.

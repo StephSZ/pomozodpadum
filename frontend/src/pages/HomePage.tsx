@@ -1,7 +1,15 @@
 import { Link } from "react-router-dom";
 import { Card, ErrorState, LoadingState } from "../components";
 import { api } from "../lib/api";
+import type { Season } from "../types";
 import { useAsyncData } from "../utils";
+
+const seasonLabels: Record<Season, string> = {
+  spring: "Jaro",
+  summer: "Léto",
+  autumn: "Podzim",
+  winter: "Zima",
+};
 
 export function HomePage() {
   const tip = useAsyncData(() => api.getTodayTip(), { cacheKey: "today-tip" });
@@ -21,6 +29,13 @@ export function HomePage() {
               <strong>
                 {tip.data.emoji} {tip.data.title}
               </strong>
+              <p className="muted">
+                {tip.data.type === "seasonal" && tip.data.season
+                  ? `Sezónní tip: ${seasonLabels[tip.data.season]}${
+                      tip.data.aiGenerated ? " • AI" : " • fallback"
+                    }`
+                  : "Klasický denní tip"}
+              </p>
               <p>{tip.data.content}</p>
               {tip.error ? <p className="muted">{tip.error}</p> : null}
             </div>
@@ -87,7 +102,7 @@ export function HomePage() {
               Skenuj odpad
             </Link>
             <Link className="button button--secondary" to="/map">
-              Najdi kontejner 🗺
+              Najdi kontejner 🗺️
             </Link>
             <Link className="button button--secondary" to="/catalog">
               📖 Katalog odpadů

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Card, ErrorState, LoadingState } from "../components";
+import { SeasonalTipsCard } from "../SeasonalTipsCard";
 import { api } from "../lib/api";
 import { useAsyncData } from "../utils";
 
@@ -9,7 +10,7 @@ export function InfoPage() {
   });
 
   if (containers.loading && !containers.data) {
-    return <LoadingState label="Načítám průvodce třídění..." />;
+    return <LoadingState label="Načítám průvodce tříděním..." />;
   }
 
   if (containers.error && !containers.data) {
@@ -17,7 +18,7 @@ export function InfoPage() {
   }
 
   if (!containers.data) {
-    return <ErrorState message="Průvodce třídění není k dispozici." />;
+    return <ErrorState message="Průvodce tříděním není k dispozici." />;
   }
 
   return (
@@ -27,7 +28,7 @@ export function InfoPage() {
           <p>Chcete rovnou najít nejbližší kontejnery nebo projít odpadový slovníček?</p>
           <div className="row row--wrap">
             <Link className="button" to="/map">
-              Najdi kontejner 🗺
+              Najdi kontejner 🗺️
             </Link>
             <Link className="button button--secondary" to="/catalog">
               📖 Katalog odpadů · Kam co patří?
@@ -35,6 +36,8 @@ export function InfoPage() {
           </div>
         </div>
       </Card>
+
+      <SeasonalTipsCard />
 
       <div className="grid grid--2">
         {containers.data.map((container) => (

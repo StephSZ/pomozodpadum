@@ -1,9 +1,10 @@
 import type {
   AnalyzeResponse,
   ContainerInfo,
-  DailyTip,
   HistoryResponse,
+  SeasonalTipsResponse,
   StatsResponse,
+  TipResponse,
   UserCorrection,
   WasteCatalogItem,
   WasteCatalogResponse,
@@ -89,7 +90,10 @@ export const api = {
     });
   },
   getTodayTip() {
-    return fetchApi<DailyTip>("/tips/today");
+    return fetchApi<TipResponse>("/tips/today");
+  },
+  getSeasonalTips() {
+    return fetchApi<SeasonalTipsResponse>("/tips/seasonal");
   },
   getStats() {
     return fetchApi<StatsResponse>("/stats");
