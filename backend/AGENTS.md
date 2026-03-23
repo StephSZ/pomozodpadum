@@ -1,7 +1,7 @@
 # Backend Agents
 
 ## Tech stack
-Node.js, Express, TypeScript, SQLite, Prisma ORM, Multer pro upload souboru a OpenAI API pro analyzu obrazku. AI analyza pouziva GPT-4o nebo mock rezim bez klice.
+Node.js, Express, TypeScript, SQLite, Prisma ORM, Multer pro upload souboru a LLM adapter vrstvu s vychozim OpenAI providerem pro analyzu obrazku. AI analyza pouziva OpenAI nebo mock rezim bez klice.
 
 ## Spusteni
 `npm install && npx prisma generate && npx prisma db push && npm run dev` -> `http://localhost:3001`
@@ -15,6 +15,14 @@ Z korene repozitare lze pouzit `npm run dev` pro soubezny start backendu a front
 
 ## Stav API
 Backend je funkcni REST API. Server je v [backend/src/index.ts](C:\Users\shura\pomozodpadum\backend\src\index.ts) a endpointy jsou rozdelene do `src/routes/`, `src/controllers/` a `src/services/`.
+
+## LLM architektura
+- `src/services/aiService.ts` obsahuje domenovou logiku analyzy odpadu a je jedine misto, ktere vola LLM service.
+- `src/services/llm/llmService.ts` vraci aktivni implementaci LLM adapteru.
+- `src/services/llm/openAiLlmAdapter.ts` obsahuje jedinou primou integraci na OpenAI SDK.
+- Provider-specific konfigurace se nacita z environment variables `OPENAI_API_KEY`, `OPENAI_MODEL`, `OPENAI_TEMPERATURE` a `OPENAI_MAX_TOKENS`.
+- Pri vymene providera ma stacit zmenit implementaci adapteru nebo factory v `src/services/llm/`.
+- Chyby pri konfiguraci, prazdne odpovedi nebo selhani API se prevadeji na aplikacni chyby a vraceji se pres centralni error handler.
 
 ## Struktura API endpointu
 | Metoda | Endpoint | Popis |
@@ -53,12 +61,15 @@ Schma je definovane v [backend/prisma/schema.prisma](C:\Users\shura\pomozodpadum
 - `PORT`
 - `DATABASE_URL`
 - `OPENAI_API_KEY`
+- `OPENAI_MODEL`
+- `OPENAI_TEMPERATURE`
+- `OPENAI_MAX_TOKENS`
 - `FRONTEND_URL`
 
 Pouzivej pouze environment variables. NIKDY necommituj `.env`, API klice ani jine secrets. Sabona patri do `.env.example`.
 
 ## Mock rezim
-Pokud `OPENAI_API_KEY` chybi nebo ma sablonovou hodnotu, `src/services/aiService.ts` vraci mock analyzu odpadu. To se pouziva pro lokalni testovani bez pristupu k OpenAI API.
+Pokud `OPENAI_API_KEY` chybi nebo ma sablonovou hodnotu, `src/services/aiService.ts` vraci mock analyzu odpadu. To se pouziva pro lokalni testovani bez pristupu k LLM providerovi.
 
 ## Security middleware
 - `helmet` pridava bezpecnostni HTTP hlavicky

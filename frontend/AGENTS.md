@@ -45,6 +45,8 @@ Frontend nema vlastni mock datasety. Mock rezim je resen na backendu: bez `OPENA
 ## API integrace
 Soubor [frontend/src/lib/api.ts](C:\Users\shura\pomozodpadum\frontend\src\lib\api.ts) obsahuje volani vsech backend endpointu. Stranky nacitaji data pres API a zobrazuji loading, error i empty states.
 
+Frontend nevola zadne LLM API primo. Veskerou AI / LLM komunikaci abstrahuje backend pres svou `src/services/llm/` vrstvu.
+
 ## Environment variables
 - `VITE_API_URL` - adresa backend API, napr. `http://localhost:3001/api`
 

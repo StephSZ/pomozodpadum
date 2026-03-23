@@ -34,8 +34,10 @@ Pomoz Odpadum je mobilne orientovana webova aplikace pro rozpoznavani odpadu z f
 ## API architektura
 Backend pouziva REST API s prefixem `/api/`, komunikace probiha pres JSON a CORS je v developmentu povoleny pro `localhost:5173`, `localhost:8080` a `localhost:3000`. V produkci je povolena pouze domena z `FRONTEND_URL`.
 
+LLM komunikace je abstrahovana pouze v backendu. Domnova AI logika vola `backend/src/services/aiService.ts`, ta pouziva `backend/src/services/llm/llmService.ts` a konkretni provider adapter. Aktualne je vychozi adapter OpenAI, ale zbytek aplikace nema volat OpenAI SDK naprimo.
+
 ## Environment variables
-- Backend: `PORT`, `DATABASE_URL`, `OPENAI_API_KEY`, `FRONTEND_URL`
+- Backend: `PORT`, `DATABASE_URL`, `OPENAI_API_KEY`, `OPENAI_MODEL`, `OPENAI_TEMPERATURE`, `OPENAI_MAX_TOKENS`, `FRONTEND_URL`
 - Frontend: `VITE_API_URL`
 
 ## Datove typy
@@ -43,7 +45,7 @@ Sdilene typy jsou definovany v [backend/src/types/index.ts](C:\Users\shura\pomoz
 
 ## Poznamky ke stavu projektu
 - `frontend/` obsahuje funkcni SPA s routami `/`, `/scan`, `/waste/:id`, `/history`, `/stats` a `/info`. Detaily jsou v [frontend/AGENTS.md](C:\Users\shura\pomozodpadum\frontend\AGENTS.md).
-- `backend/` obsahuje kompleti REST API, mock rezim bez OpenAI klice, rate limiting, `helmet`, validaci vstupu a produkcni build. Detaily jsou v [backend/AGENTS.md](C:\Users\shura\pomozodpadum\backend\AGENTS.md).
+- `backend/` obsahuje kompleti REST API, mock rezim bez OpenAI klice, rate limiting, `helmet`, validaci vstupu, LLM adapter vrstvu a produkcni build. Detaily jsou v [backend/AGENTS.md](C:\Users\shura\pomozodpadum\backend\AGENTS.md).
 
 ## Udrzba dokumentace
 Pokud pridas novou funkci, endpoint nebo zmenis strukturu projektu, aktualizuj prislusny `AGENTS.md` soubor.
