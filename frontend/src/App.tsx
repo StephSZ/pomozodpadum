@@ -15,6 +15,7 @@ function Layout() {
     { to: "/scan", label: "Skenovat" },
     { to: "/stats", label: "Statistiky" },
     { to: "/map", label: "Mapa", icon: <MapPin size={16} /> },
+    { to: "/catalog", label: "Katalog" },
     { to: "/history", label: "Historie" },
     { to: "/info", label: "Info" },
   ];
