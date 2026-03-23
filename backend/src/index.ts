@@ -8,6 +8,7 @@ import catalogRouter from "./routes/catalog";
 import containersRouter from "./routes/containers";
 import correctionsRouter from "./routes/corrections";
 import { errorHandler } from "./middleware/errorHandler";
+import glossaryRouter from "./routes/glossary";
 import healthRouter from "./routes/health";
 import historyRouter from "./routes/history";
 import statsRouter from "./routes/stats";
@@ -22,6 +23,7 @@ const port = Number(process.env.PORT) || 3001;
 const isProduction = process.env.NODE_ENV === "production";
 const developmentOrigins = [
   "http://localhost:5173",
+  "http://localhost:5174",
   "http://localhost:8080",
   "http://localhost:3000",
 ];
@@ -73,6 +75,7 @@ app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
 app.use("/api/health", healthRouter);
+app.use("/api/glossary", glossaryRouter);
 app.use("/api/tips", tipsRouter);
 app.use("/api/analyze", analyzeRateLimit, analyzeRouter);
 app.use("/api/waste", wasteRouter);

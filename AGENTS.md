@@ -1,51 +1,51 @@
 # Pomoz Odpadum
 
-## Prehled projektu
-Pomoz Odpadum je mobilne orientovana webova aplikace pro rozpoznavani odpadu z fotek pomoci AI. Aplikace je urcena pro ceske uzivatele. Uzivatel vyfoti nebo nahraje fotku odpadu, AI rozpozna predmet a precte etiketu, aplikace poradi kam odpad patri, zobrazi barvu kontejneru a instrukce, ulozi zaznam do historie a edukuje pomoci dennih tipuu.
+## Přehled projektu
+Pomoz Odpadum je mobilně orientovaná webová aplikace pro rozpoznávání odpadu z fotek pomocí AI. Aplikace je určená pro české uživatele. Uživatel vyfotí nebo nahraje fotku odpadu, AI rozpozná předmět a přečte etiketu, aplikace poradí kam odpad patří, zobrazí barvu kontejneru a instrukce, uloží záznam do historie a edukuje pomocí denních tipů.
 
-## Struktura repozitare
+## Struktura repozitáře
 ```text
 /
  frontend/          # React + Vite + TypeScript
  backend/           # Node.js + Express + TypeScript + SQLite (Prisma)
- AGENTS.md          # Tento soubor - prehled projektu
+ AGENTS.md          # Tento soubor - přehled projektu
  .gitignore
 ```
 
 ## Jak spustit projekt
 - Frontend: `cd frontend && npm install && npm run dev` -> `http://localhost:5173` nebo `http://localhost:8080`
 - Backend: `cd backend && npm install && npx prisma generate && npx prisma db push && npm run dev` -> `http://localhost:3001`
-- Databaze seed: `cd backend && npm run db:seed`
-- Obe casti najednou z korene: `npm install` a potom `npm run dev`
-- Produkcni build obou casti: `npm run build`
+- Databáze seed: `cd backend && npm run db:seed`
+- Obě části najednou z kořene: `npm install` a potom `npm run dev`
+- Produkční build obou částí: `npm run build`
 
 ## Konvence
-- Jazyk kodu: anglictina pro nazvy promennych, funkci, komponent a souboru.
-- Jazyk UI: cestina pro texty, hlasky, labely a uzivatelsky obsah.
-- Commity: anglicky, strucne, konvencni format `feat:`, `fix:`, `docs:`, `chore:`.
+- Jazyk kódu: angličtina pro názvy proměnných, funkcí, komponent a souborů.
+- Jazyk UI: čeština pro texty, hlášky, labely a uživatelský obsah.
+- Commity: anglicky, stručně, konvenční formát `feat:`, `fix:`, `docs:`, `chore:`.
 
-## Bezpecnostni pravidla
-- NIKDY necommituj soubory `.env` ani API klice.
-- Soubory `.env` musi byt v `.gitignore`.
-- Pouzivej environment variables pro vsechny secrets, vcetne API klicu a connection stringu.
-- Soubor `.env.example` obsahuje pouze sablonu bez skutecnych hodnot.
-- Backend pouziva `helmet`, globalni rate limiting 100 pozadavku za 15 minut na IP a zvlastni limit 10 pozadavku za 15 minut pro `/api/analyze`.
+## Bezpečnostní pravidla
+- NIKDY necommituj soubory `.env` ani API klíče.
+- Soubory `.env` musí být v `.gitignore`.
+- Používej environment variables pro všechny secrets, včetně API klíčů a connection stringů.
+- Soubor `.env.example` obsahuje pouze šablonu bez skutečných hodnot.
+- Backend používá `helmet`, globální rate limiting 100 požadavků za 15 minut na IP a zvláštní limit 10 požadavků za 15 minut pro `/api/analyze`.
 
 ## API architektura
-Backend pouziva REST API s prefixem `/api/`, komunikace probiha pres JSON a CORS je v developmentu povoleny pro `localhost:5173`, `localhost:8080` a `localhost:3000`. V produkci je povolena pouze domena z `FRONTEND_URL`.
+Backend používá REST API s prefixem `/api/`, komunikace probíhá přes JSON a CORS je v developmentu povolený pro `localhost:5173`, `localhost:8080` a `localhost:3000`. V produkci je povolená pouze doména z `FRONTEND_URL`.
 
-LLM komunikace je abstrahovana pouze v backendu. Domnova AI logika vola `backend/src/services/aiService.ts`, ta pouziva `backend/src/services/llm/llmService.ts` a konkretni provider adapter. Aktualne je vychozi adapter OpenAI, ale zbytek aplikace nema volat OpenAI SDK naprimo.
+LLM komunikace je abstrahovaná pouze v backendu. Doménová AI logika volá `backend/src/services/aiService.ts`, ta používá `backend/src/services/llm/llmService.ts` a konkrétní provider adapter. Aktuálně je výchozí adapter OpenAI, ale zbytek aplikace nemá volat OpenAI SDK napřímo.
 
 ## Environment variables
 - Backend: `PORT`, `DATABASE_URL`, `OPENAI_API_KEY`, `OPENAI_MODEL`, `OPENAI_TEMPERATURE`, `OPENAI_MAX_TOKENS`, `FRONTEND_URL`
 - Frontend: `VITE_API_URL`
 
-## Datove typy
-Sdilene typy jsou definovany v [backend/src/types/index.ts](C:\Users\shura\pomozodpadum\backend\src\types\index.ts). Klicove typy jsou `ContainerType`, `WasteItem`, `DailyTip` a `UserCorrection`.
+## Datové typy
+Sdílené typy jsou definované v [backend/src/types/index.ts](C:\Users\shura\git_bash\pomozodpadum\backend\src\types\index.ts). Klíčové typy jsou `ContainerType`, `WasteItem`, `DailyTip` a `UserCorrection`.
 
-## Poznamky ke stavu projektu
-- `frontend/` obsahuje funkcni SPA s routami `/`, `/scan`, `/waste/:id`, `/history`, `/stats` a `/info`. Domovska stranka nacita `/api/tips/today` a informacni stranka zobrazuje sezónni tipy z `/api/tips/seasonal`. Detaily jsou v [frontend/AGENTS.md](C:\Users\shura\pomozodpadum\frontend\AGENTS.md).
-- `backend/` obsahuje kompleti REST API, mock rezim bez OpenAI klice, rate limiting, `helmet`, validaci vstupu, LLM adapter vrstvu a produkcni build. Novy servis `backend/src/services/seasonalTipsService.ts` generuje sezónni tipy pres stavajici LLM abstrakci, cachi je na 24 hodin a pri nedostupnosti AI pouziva staticky fallback dataset. Detaily jsou v [backend/AGENTS.md](C:\Users\shura\pomozodpadum\backend\AGENTS.md).
+## Poznámky ke stavu projektu
+- `frontend/` obsahuje funkční SPA s routami `/`, `/scan`, `/waste/:id`, `/history`, `/stats` a `/info`. Domovská stránka načítá `/api/tips/today` a informační stránka zobrazuje sezónní tipy z `/api/tips/seasonal`. Detaily jsou v [frontend/AGENTS.md](C:\Users\shura\git_bash\pomozodpadum\frontend\AGENTS.md).
+- `backend/` obsahuje kompletní REST API, mock režim bez OpenAI klíče, rate limiting, `helmet`, validaci vstupu, LLM adapter vrstvu a produkční build. `backend/src/services/seasonalTipsService.ts` generuje sezónní tipy přes stávající LLM abstrakci, cachuje je na 24 hodin a při nedostupnosti AI používá statický fallback dataset. Backend nově obsahuje také ekologický slovníček dostupný přes `/api/glossary`, `/api/glossary/search?q=...` a `/api/glossary/:id`. Detaily jsou v [backend/AGENTS.md](C:\Users\shura\git_bash\pomozodpadum\backend\AGENTS.md).
 
-## Udrzba dokumentace
-Pokud pridas novou funkci, endpoint nebo zmenis strukturu projektu, aktualizuj prislusny `AGENTS.md` soubor.
+## Údržba dokumentace
+Pokud přidáš novou funkci, endpoint nebo změníš strukturu projektu, aktualizuj příslušný `AGENTS.md` soubor.

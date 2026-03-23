@@ -1,62 +1,67 @@
 # Backend Agents
 
 ## Tech stack
-Node.js, Express, TypeScript, SQLite, Prisma ORM, Multer pro upload souboru a LLM adapter vrstvu s vychozim OpenAI providerem pro analyzu obrazku. AI analyza pouziva OpenAI nebo mock rezim bez klice. Stejna LLM abstrakce slouzi i pro generovani sezonnich tipu trideni odpadu.
+Node.js, Express, TypeScript, SQLite, Prisma ORM, Multer pro upload souborů a LLM adapter vrstva s výchozím OpenAI providerem pro analýzu obrázků. AI analýza používá OpenAI nebo mock režim bez klíče. Stejná LLM abstrakce slouží i pro generování sezónních tipů třídění odpadu.
 
-## Spusteni
+## Spuštění
 `npm install && npx prisma generate && npx prisma db push && npm run dev` -> `http://localhost:3001`
 
-Z korene repozitare lze pouzit `npm run dev` pro soubezny start backendu a frontendu.
+Z kořene repozitáře lze použít `npm run dev` pro souběžný start backendu a frontendu.
 
-## Produkcni build
-- `npm run build` vytvori `dist/`
-- `npm run start:prod` spusti buildnutou verzi z `dist/index.js`
-- Z korene repozitare lze pouzit `npm run build` pro build backendu i frontendu
+## Produkční build
+- `npm run build` vytvoří `dist/`
+- `npm run start:prod` spustí buildnutou verzi z `dist/index.js`
+- Z kořene repozitáře lze použít `npm run build` pro build backendu i frontendu
 
 ## Stav API
-Backend je funkcni REST API. Server je v [backend/src/index.ts](C:\Users\shura\pomozodpadum\backend\src\index.ts) a endpointy jsou rozdelene do `src/routes/`, `src/controllers/` a `src/services/`.
+Backend je funkční REST API. Server je v [backend/src/index.ts](C:\Users\shura\git_bash\pomozodpadum\backend\src\index.ts) a endpointy jsou rozdělené do `src/routes/`, `src/controllers/` a `src/services/`.
+
+Statická edukační data v `src/data/` zahrnují i ekologický slovníček v `src/data/glossary.ts`, který napájí read-only endpointy pro seznam pojmů, fulltextové hledání a detail pojmu.
 
 ## LLM architektura
-- `src/services/aiService.ts` obsahuje domenovou logiku analyzy odpadu a je jedine misto, ktere vola LLM service.
-- `src/services/seasonalTipsService.ts` generuje 5 sezonnich tipu pro aktualni rocni obdobi, uklada je do 24h in-memory cache a pri chybe nebo chybejici konfiguraci vraci fallback data.
-- `src/services/llm/llmService.ts` vraci aktivni implementaci LLM adapteru.
-- `src/services/llm/openAiLlmAdapter.ts` obsahuje jedinou primou integraci na OpenAI SDK.
-- Provider-specific konfigurace se nacita z environment variables `OPENAI_API_KEY`, `OPENAI_MODEL`, `OPENAI_TEMPERATURE` a `OPENAI_MAX_TOKENS`.
-- Pri vymene providera ma stacit zmenit implementaci adapteru nebo factory v `src/services/llm/`.
-- Chyby pri konfiguraci, prazdne odpovedi nebo selhani API se prevadeji na aplikacni chyby a vraceji se pres centralni error handler.
+- `src/services/aiService.ts` obsahuje doménovou logiku analýzy odpadu a je jediné místo, které volá LLM service.
+- `src/services/seasonalTipsService.ts` generuje 5 sezónních tipů pro aktuální roční období, ukládá je do 24h in-memory cache a při chybě nebo chybějící konfiguraci vrací fallback data.
+- `src/services/llm/llmService.ts` vrací aktivní implementaci LLM adapteru.
+- `src/services/llm/openAiLlmAdapter.ts` obsahuje jedinou přímou integraci na OpenAI SDK.
+- Provider-specific konfigurace se načítá z environment variables `OPENAI_API_KEY`, `OPENAI_MODEL`, `OPENAI_TEMPERATURE` a `OPENAI_MAX_TOKENS`.
+- Při výměně providera má stačit změnit implementaci adapteru nebo factory v `src/services/llm/`.
+- Chyby při konfiguraci, prázdné odpovědi nebo selhání API se převádějí na aplikační chyby a vracejí se přes centrální error handler.
 
-## Struktura API endpointu
+## Struktura API endpointů
 | Metoda | Endpoint | Popis |
 |--------|----------|-------|
 | GET | /api/health | Health check |
-| POST | /api/analyze | Analyza fotky odpadu (AI) |
+| POST | /api/analyze | Analýza fotky odpadu (AI) |
 | GET | /api/waste/:id | Detail odpadu |
-| GET | /api/history | Seznam historie skenu |
-| DELETE | /api/history/:id | Smazani zaznamu z historie |
-| POST | /api/corrections | Odeslani korekce |
-| GET | /api/tips/today | Stridave denni nebo sezonni tip pro dnes |
-| GET | /api/tips/seasonal | 5 sezonnich tipu pro aktualni obdobi |
-| GET | /api/tips | Seznam vsech tipu |
-| GET | /api/stats | Statistiky uzivatele |
-| GET | /api/containers | Pruvodce trideni - vsechny kontejnery |
+| GET | /api/history | Seznam historie skenů |
+| DELETE | /api/history/:id | Smazání záznamu z historie |
+| POST | /api/corrections | Odeslání korekce |
+| GET | /api/tips/today | Střídavě denní nebo sezónní tip pro dnešek |
+| GET | /api/tips/seasonal | 5 sezónních tipů pro aktuální období |
+| GET | /api/tips | Seznam všech tipů |
+| GET | /api/stats | Statistiky uživatele |
+| GET | /api/containers | Průvodce tříděním - všechny kontejnery |
 | GET | /api/containers/:type | Detail kontejneru |
-| GET | /api/catalog | Katalog odpadu s fulltextem a filtry podle pismene a kategorie |
-| GET | /api/catalog/:id | Detail polozky katalogu odpadu |
-| DELETE | /api/history | Smazani cele historie pri `confirm=true` |
-| GET | /api/corrections | Seznam korekci |
+| GET | /api/catalog | Katalog odpadu s fulltextem a filtry podle písmene a kategorie |
+| GET | /api/catalog/:id | Detail položky katalogu odpadu |
+| GET | /api/glossary | Ekologický slovníček seřazený abecedně |
+| GET | /api/glossary/search?q=... | Fulltextové hledání ve slovníčku podle názvu a definice |
+| GET | /api/glossary/:id | Detail pojmu ze slovníčku |
+| DELETE | /api/history | Smazání celé historie při `confirm=true` |
+| GET | /api/corrections | Seznam korekcí |
 
-## Databazove schema
-- `WasteRecord`: uklada rozpoznany odpad, primarni kontejner, popis, obrazek, instrukce, slozeni, zabavny fakt, podobne odpady a cas skenu.
-- `UserCorrection`: uklada uzivatelske korekce rozpoznani odpadu a kontejneru.
-- `DailyTip`: uklada edukacni denni tipy pro uzivatele.
-- Sezonni tipy se neukladaji do databaze. Zdroj je LLM + 24h cache + fallback data v `src/data/seasonalTips.ts`.
+## Databázové schema
+- `WasteRecord`: ukládá rozpoznaný odpad, primární kontejner, popis, obrázek, instrukce, složení, zábavný fakt, podobné odpady a čas skenu.
+- `UserCorrection`: ukládá uživatelské korekce rozpoznání odpadu a kontejneru.
+- `DailyTip`: ukládá edukační denní tipy pro uživatele.
+- Sezónní tipy se neukládají do databáze. Zdroj je LLM + 24h cache + fallback data v `src/data/seasonalTips.ts`.
 
-Schma je definovane v [backend/prisma/schema.prisma](C:\Users\shura\pomozodpadum\backend\prisma\schema.prisma).
+Schema je definované v [backend/prisma/schema.prisma](C:\Users\shura\git_bash\pomozodpadum\backend\prisma\schema.prisma).
 
-## Jak pridat novy endpoint
-1. Vytvor route v `src/routes/`.
-2. Vytvor controller v `src/controllers/`.
-3. Pokud je potreba, pridej service v `src/services/`.
+## Jak přidat nový endpoint
+1. Vytvoř route v `src/routes/`.
+2. Vytvoř controller v `src/controllers/`.
+3. Pokud je potřeba, přidej service v `src/services/`.
 4. Zaregistruj route v `src/index.ts`.
 5. Aktualizuj tuto dokumentaci.
 
@@ -69,24 +74,24 @@ Schma je definovane v [backend/prisma/schema.prisma](C:\Users\shura\pomozodpadum
 - `OPENAI_MAX_TOKENS`
 - `FRONTEND_URL`
 
-Pouzivej pouze environment variables. NIKDY necommituj `.env`, API klice ani jine secrets. Sabona patri do `.env.example`.
+Používej pouze environment variables. NIKDY necommituj `.env`, API klíče ani jiné secrets. Šablona patří do `.env.example`.
 
-## Mock rezim
-Pokud `OPENAI_API_KEY` chybi nebo ma sablonovou hodnotu, `src/services/aiService.ts` vraci mock analyzu odpadu. Sezonni tipy v tomtez rezimu pouziji staticky fallback dataset rozdeleny po 5 tipech pro jaro, leto, podzim a zimu.
+## Mock režim
+Pokud `OPENAI_API_KEY` chybí nebo má šablonovou hodnotu, `src/services/aiService.ts` vrací mock analýzu odpadu. Sezónní tipy v tomtéž režimu použijí statický fallback dataset rozdělený po 5 tipech pro jaro, léto, podzim a zimu.
 
 ## Security middleware
-- `helmet` pridava bezpecnostni HTTP hlavicky
-- globalni rate limiting je 100 pozadavku za 15 minut na IP
-- `/api/analyze` ma zvlastni limit 10 pozadavku za 15 minut na IP
-- validace vstupu je sdilena v `src/middleware/validate.ts`
+- `helmet` přidává bezpečnostní HTTP hlavičky
+- globální rate limiting je 100 požadavků za 15 minut na IP
+- `/api/analyze` má zvláštní limit 10 požadavků za 15 minut na IP
+- validace vstupu je sdílená v `src/middleware/validate.ts`
 
 ## uploads/
-Slozka `uploads/` obsahuje nahrane fotky, je v `.gitignore` a ma se cistit periodicky.
+Složka `uploads/` obsahuje nahrané fotky, je v `.gitignore` a má se čistit periodicky.
 
-## Bezpecnostni pravidla
-- NIKDY necommituj `.env` soubory, API klice ani jine citlive udaje.
-- Vsechny secrets musi jit pres environment variables.
-- `.env.example` musi obsahovat pouze sablony bez realnych hodnot.
+## Bezpečnostní pravidla
+- NIKDY necommituj `.env` soubory, API klíče ani jiné citlivé údaje.
+- Všechny secrets musí jít přes environment variables.
+- `.env.example` musí obsahovat pouze šablony bez reálných hodnot.
 
-## Udrzba dokumentace
-Pokud pridas novou funkci, endpoint nebo zmenis strukturu projektu, aktualizuj prislusny `AGENTS.md` soubor.
+## Údržba dokumentace
+Pokud přidáš novou funkci, endpoint nebo změníš strukturu projektu, aktualizuj příslušný `AGENTS.md` soubor.
