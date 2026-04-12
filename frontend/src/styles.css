@@ -14,6 +14,7 @@
 body {
   margin: 0;
   min-width: 320px;
+  background: #f7f6f1;
 }
 
 button,
@@ -47,9 +48,9 @@ a {
   height: 56px;
   background: #ffffff;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  justify-content: space-between;
   padding: 0 24px;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06);
 }
@@ -75,6 +76,7 @@ a {
   display: flex;
   gap: 4px;
   align-items: center;
+  justify-content: center;
 }
 
 .nav__link {
