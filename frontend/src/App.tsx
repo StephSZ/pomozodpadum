@@ -22,28 +22,25 @@ function Layout() {
 
   return (
     <div className="shell">
-      <header className="hero">
-        <p className="hero__eyebrow">Pomoz Odpadům</p>
-        <h1>Praktický AI průvodce třídění odpadu</h1>
-        <p className="hero__text">
-          Vyfoťte odpad, získejte doporučení kontejneru, uložte historii a sledujte své
-          třídicí návyky.
-        </p>
+      <header className="topbar">
+        <div className="topbar__logo">
+          <img src="/logo.png" alt="Pomoz Odpadům" className="topbar__logo-img" />
+          <span className="topbar__logo-text">Pomoz Odpadům</span>
+        </div>
+        <nav className="topbar__nav">
+          {items.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.to === "/"}
+              className={({ isActive }) => (isActive ? "nav__link nav__link--active" : "nav__link")}
+            >
+              {"icon" in item ? <span className="nav__icon">{item.icon}</span> : null}
+              {item.label}
+            </NavLink>
+          ))}
+        </nav>
       </header>
-
-      <nav className="nav">
-        {items.map((item) => (
-          <NavLink
-            key={item.to}
-            to={item.to}
-            end={item.to === "/"}
-            className={({ isActive }) => (isActive ? "nav__link nav__link--active" : "nav__link")}
-          >
-            {"icon" in item ? <span className="nav__icon">{item.icon}</span> : null}
-            {item.label}
-          </NavLink>
-        ))}
-      </nav>
 
       <Routes>
         <Route element={<HomePage />} path="/" />
