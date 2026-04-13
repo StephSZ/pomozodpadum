@@ -16,7 +16,7 @@ export function HomePage() {
         const res = await api.getCatalog({});
         const grouped: Record<string, WasteCatalogItem[]> = {};
         for (const item of res.items) {
-          const letter = item.letter;
+          const letter = item.letter.toUpperCase();
           if (!grouped[letter]) grouped[letter] = [];
           if (grouped[letter].length < 2) grouped[letter].push(item);
         }
@@ -78,7 +78,7 @@ export function HomePage() {
         <p className="home-section__sub">Kontejnery ve vašem okolí</p>
         <div className="home-map">
           <iframe
-            src="https://www.kamtridit.cz/mapa"
+            src="https://www.kamtridit.cz"
             title="Mapa kontejnerů"
             className="home-map__iframe"
             allowFullScreen
