@@ -37,7 +37,8 @@ const allowedOrigins = new Set(
 
 const globalRateLimit = rateLimit({
   windowMs: 15 * 60 * 1000,
-  limit: 100,
+  limit: isProduction ? 100 : 0,
+  skip: () => !isProduction,
   standardHeaders: true,
   legacyHeaders: false,
   message: {
@@ -48,7 +49,8 @@ const globalRateLimit = rateLimit({
 
 const analyzeRateLimit = rateLimit({
   windowMs: 15 * 60 * 1000,
-  limit: 10,
+  limit: isProduction ? 10 : 0,
+  skip: () => !isProduction,
   standardHeaders: true,
   legacyHeaders: false,
   message: {
