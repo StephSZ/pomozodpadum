@@ -678,16 +678,15 @@ details summary {
   background-color: #ffffff;
   aspect-ratio: 16 / 9;
   max-height: 500px;
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
   padding: 24px 20px;
 }
 
 .hero-content {
   position: relative;
   z-index: 2;
-  max-width: 600px;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
 }
 
 .hero-title {
