@@ -148,13 +148,18 @@ export function WasteGallery() {
   useEffect(() => {
     function recalc() {
       if (wrapRef.current) {
-        const w = wrapRef.current.clientWidth;
-        setItemWidth(Math.floor((w - GAP * (VISIBLE - 1)) / VISIBLE));
+        const w = wrapRef.current.getBoundingClientRect().width;
+        if (w > 0) {
+          setItemWidth(Math.floor((w - GAP * (VISIBLE - 1)) / VISIBLE));
+        }
       }
     }
-    recalc();
+    const timer = setTimeout(recalc, 50);
     window.addEventListener("resize", recalc);
-    return () => window.removeEventListener("resize", recalc);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("resize", recalc);
+    };
   }, []);
 
   return (
