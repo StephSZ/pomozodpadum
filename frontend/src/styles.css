@@ -689,18 +689,18 @@ details summary {
 
 .hero-title {
   font-family: 'Winky Sans', 'Inter', sans-serif;
-  font-size: 28px;
+  font-size: 84px;
   font-weight: 700;
-  color: #1a1a18;
+  color: #ffffff;
   margin: 0 0 6px;
   line-height: 1.1;
 }
 
 .hero-subtitle {
   font-family: 'Winky Sans', 'Inter', sans-serif;
-  font-size: 14px;
+  font-size: 42px;
   font-weight: 400;
-  color: #4a4a45;
+  color: #ffffff;
   margin: 0;
 }
 .waste-gallery__controls { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; margin-bottom: 12px; }
@@ -726,11 +726,11 @@ details summary {
 
 @media (min-width: 768px) {
   .hero-content { padding-left: 8%; }
-  .hero-title { font-size: 36px; }
-  .hero-subtitle { font-size: 16px; }
+  .hero-title { font-size: 108px; }
+  .hero-subtitle { font-size: 48px; }
 }
 
 @media (min-width: 1024px) {
   .hero-content { padding-left: 10%; }
-  .hero-title { font-size: 44px; }
+  .hero-title { font-size: 132px; }
 }
