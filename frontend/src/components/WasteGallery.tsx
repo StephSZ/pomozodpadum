@@ -204,7 +204,12 @@ export function WasteGallery() {
 
       <div className="waste-gallery__dots">
         {Array.from({ length: pages }).map((_, i) => (
-          <span key={i} className={`waste-gallery__dot${i === pos ? " waste-gallery__dot--active" : ""}`} />
+          <span
+            key={i}
+            className={`waste-gallery__dot${i === pos ? " waste-gallery__dot--active" : ""}`}
+            onClick={() => setPos(i)}
+            style={{ cursor: "pointer" }}
+          />
         ))}
       </div>
     </div>
