@@ -670,11 +670,11 @@ details summary {
   margin-bottom: 24px;
   background-image: url('/images/park-hero.png');
   background-size: cover;
-  background-position: center 30%;
+  background-position: center 75%;
   background-repeat: no-repeat;
   background-color: #f5f3e7;
-  aspect-ratio: 21 / 9;
-  max-height: 460px;
+  aspect-ratio: 21 / 7;
+  max-height: 420px;
   padding: 40px 32px;
 }
 
