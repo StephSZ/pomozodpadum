@@ -639,6 +639,9 @@ details summary {
   margin-bottom: 14px;
 }
 
+.section-divider { padding: 24px 0 8px; }
+.section-divider__title { font-size: 22px; font-weight: 700; color: #1a1a18; display: block; }
+
 .home-section { background: #ffffff; border: 1px solid rgba(0,0,0,0.08); border-radius: 12px; padding: 24px 28px; }
 .home-section__title { font-size: 18px; font-weight: 700; color: #1a1a18; display: block; margin-bottom: 6px; }
 .home-section__sub { font-size: 14px; color: #6b6a65; margin: 0 0 20px; }

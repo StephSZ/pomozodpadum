@@ -50,6 +50,10 @@ export function HomePage() {
         ) : null}
       </div>
 
+      <div className="section-divider">
+        <strong className="section-divider__title">KAM S ODPADEM?</strong>
+      </div>
+
       <div className="home-section home-section--catalog">
         <strong className="home-section__title">Katalog odpadů</strong>
         <p className="home-section__sub">Rychlý přehled — klikněte pro více informací</p>
