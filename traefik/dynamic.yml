@@ -1,0 +1,29 @@
+http:
+  routers:
+    pomoz-odpadum-backend:
+      rule: Host(`zhao.aibr.cz`) && PathPrefix(`/api`)
+      entryPoints:
+        - websecure
+      service: pomoz-odpadum-backend
+      priority: 100
+      tls:
+        certResolver: letsencrypt
+
+    pomoz-odpadum-frontend:
+      rule: Host(`zhao.aibr.cz`)
+      entryPoints:
+        - websecure
+      service: pomoz-odpadum-frontend
+      tls:
+        certResolver: letsencrypt
+
+  services:
+    pomoz-odpadum-backend:
+      loadBalancer:
+        servers:
+          - url: http://backend:3001
+
+    pomoz-odpadum-frontend:
+      loadBalancer:
+        servers:
+          - url: http://frontend:80

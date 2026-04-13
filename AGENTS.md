@@ -8,6 +8,7 @@ Pomoz Odpadum je mobilně orientovaná webová aplikace pro rozpoznávání odpa
 /
  frontend/          # React + Vite + TypeScript
  backend/           # Node.js + Express + TypeScript + SQLite (Prisma)
+ docker-compose.yml # Docker Compose pro produkční/společné spuštění
  AGENTS.md          # Tento soubor - přehled projektu
  .gitignore
 ```
@@ -18,6 +19,7 @@ Pomoz Odpadum je mobilně orientovaná webová aplikace pro rozpoznávání odpa
 - Databáze seed: `cd backend && npm run db:seed`
 - Obě části najednou z kořene: `npm install` a potom `npm run dev`
 - Produkční build obou částí: `npm run build`
+- Docker konfigurace je připravená přes `backend/Dockerfile`, `frontend/Dockerfile` a `docker-compose.yml` v kořeni; produkční nasazení používá Traefik jako reverse proxy, frontend běží přes nginx a `/api` provoz je směrovaný na backend
 
 ## Konvence
 - Jazyk kódu: angličtina pro názvy proměnných, funkcí, komponent a souborů.
@@ -46,6 +48,10 @@ Sdílené typy jsou definované v [backend/src/types/index.ts](C:\Users\shura\gi
 ## Poznámky ke stavu projektu
 - `frontend/` obsahuje funkční SPA s routami `/`, `/scan`, `/waste/:id`, `/history`, `/stats` a `/info`. Domovská stránka načítá `/api/tips/today` a informační stránka zobrazuje sezónní tipy z `/api/tips/seasonal`. Detaily jsou v [frontend/AGENTS.md](C:\Users\shura\git_bash\pomozodpadum\frontend\AGENTS.md).
 - `backend/` obsahuje kompletní REST API, mock režim bez OpenAI klíče, rate limiting, `helmet`, validaci vstupu, LLM adapter vrstvu a produkční build. `backend/src/services/seasonalTipsService.ts` generuje sezónní tipy přes stávající LLM abstrakci, cachuje je na 24 hodin a při nedostupnosti AI používá statický fallback dataset. Backend nově obsahuje také ekologický slovníček dostupný přes `/api/glossary`, `/api/glossary/search?q=...` a `/api/glossary/:id`. Detaily jsou v [backend/AGENTS.md](C:\Users\shura\git_bash\pomozodpadum\backend\AGENTS.md).
+- Produkční Docker nasazení používá multi-stage build pro backend i frontend, `docker compose` síť mezi kontejnery a pojmenované volume `backend_data` a `backend_uploads` pro SQLite data a uploady.
+- `docker-compose.yml` nově obsahuje službu `traefik` s entrypointy `web` (80) a `websecure` (443), automatickým HTTP -> HTTPS redirectem, Let's Encrypt ACME HTTP challenge a persistentním volume `letsencrypt` pro `/letsencrypt/acme.json`.
+- Produkční routing je definovaný v `traefik/dynamic.yml`; `https://zhao.aibr.cz` směřuje na frontend a `https://zhao.aibr.cz/api` na backend. Traefik labels zůstávají u služeb připravené, ale v aktuálním serverovém prostředí je routing aktivně řešený přes file provider kvůli nekompatibilitě Traefik Docker provideru s místní verzí Docker Engine.
+- Služby `frontend`, `backend` i `traefik` sdílí síť `traefik-network` a mají `restart: always`.
 
 ## Údržba dokumentace
 Pokud přidáš novou funkci, endpoint nebo změníš strukturu projektu, aktualizuj příslušný `AGENTS.md` soubor.

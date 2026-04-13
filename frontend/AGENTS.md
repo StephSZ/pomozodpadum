@@ -11,6 +11,8 @@ Z korene repozitare lze pouzit `npm run dev` pro soubezny start backendu a front
 ## Produkcni build
 `npm run build` vytvori produkcni vystup. API base URL se bere z `VITE_API_URL`. Pro produkci udrzujte realnou hodnotu mimo Git a v `.env.example` pouze sablonu.
 
+`Dockerfile` pouziva multi-stage build: nejdriv sestavi Vite aplikaci, potom ji servira pres nginx. `frontend/nginx.conf` zaroven proxuje `/api` na backend kontejner.
+
 ## Aktualni stav
 Frontend je funkcni SPA nad backend API. Vstup je v [frontend/src/main.tsx](C:\Users\shura\pomozodpadum\frontend\src\main.tsx), routy jsou v [frontend/src/App.tsx](C:\Users\shura\pomozodpadum\frontend\src\App.tsx), centralni API klient v [frontend/src/lib/api.ts](C:\Users\shura\pomozodpadum\frontend\src\lib\api.ts) a stranky v `src/pages/`.
 
@@ -49,6 +51,8 @@ Frontend nevola zadne LLM API primo. Veskerou AI / LLM komunikaci abstrahuje bac
 
 ## Environment variables
 - `VITE_API_URL` - adresa backend API, napr. `http://localhost:3001/api`
+
+V Docker Compose je doporucena hodnota `VITE_API_URL=/api`, protoze nginx ve frontend kontejneru proxyuje API volani na backend uvnitr docker site.
 
 ## Design system
 - Primarni zelena: `#16A34A`

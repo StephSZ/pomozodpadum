@@ -1,0 +1,84 @@
+services:
+  traefik:
+    image: traefik:v3.5
+    command:
+      - --providers.file.filename=/etc/traefik/dynamic.yml
+      - --providers.file.watch=true
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --entrypoints.web.http.redirections.entryPoint.to=websecure
+      - --entrypoints.web.http.redirections.entryPoint.scheme=https
+      - --certificatesresolvers.letsencrypt.acme.email=shuranzh@gmail.com
+      - --certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json
+      - --certificatesresolvers.letsencrypt.acme.httpchallenge=true
+      - --certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - letsencrypt:/letsencrypt
+      - ./traefik/dynamic.yml:/etc/traefik/dynamic.yml:ro
+    networks:
+      - traefik-network
+    restart: always
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    env_file:
+      - path: ./.env
+        required: false
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-file:/app/data/dev.db}
+      FRONTEND_URL: ${FRONTEND_URL:-https://zhao.aibr.cz}
+      NODE_ENV: production
+      PORT: ${PORT:-3001}
+    volumes:
+      - backend_data:/app/data
+      - backend_uploads:/app/uploads
+    networks:
+      - traefik-network
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-network
+      - traefik.http.routers.pomoz-odpadum-backend.rule=Host(`zhao.aibr.cz`) && PathPrefix(`/api`)
+      - traefik.http.routers.pomoz-odpadum-backend.entrypoints=websecure
+      - traefik.http.routers.pomoz-odpadum-backend.tls=true
+      - traefik.http.routers.pomoz-odpadum-backend.tls.certresolver=letsencrypt
+      - traefik.http.routers.pomoz-odpadum-backend.priority=100
+      - traefik.http.services.pomoz-odpadum-backend.loadbalancer.server.port=${PORT:-3001}
+    restart: always
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL:-/api}
+    env_file:
+      - path: ./.env
+        required: false
+    depends_on:
+      - backend
+    networks:
+      - traefik-network
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-network
+      - traefik.http.routers.pomoz-odpadum-frontend.rule=Host(`zhao.aibr.cz`)
+      - traefik.http.routers.pomoz-odpadum-frontend.entrypoints=websecure
+      - traefik.http.routers.pomoz-odpadum-frontend.tls=true
+      - traefik.http.routers.pomoz-odpadum-frontend.tls.certresolver=letsencrypt
+      - traefik.http.services.pomoz-odpadum-frontend.loadbalancer.server.port=80
+    restart: always
+
+networks:
+  traefik-network:
+    driver: bridge
+
+volumes:
+  backend_data:
+  backend_uploads:
+  letsencrypt:

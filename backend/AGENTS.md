@@ -12,6 +12,7 @@ Z kořene repozitáře lze použít `npm run dev` pro souběžný start backendu
 - `npm run build` vytvoří `dist/`
 - `npm run start:prod` spustí buildnutou verzi z `dist/index.js`
 - Z kořene repozitáře lze použít `npm run build` pro build backendu i frontendu
+- `Dockerfile` používá multi-stage build nad Node.js 20, v produkčním image kopíruje pouze runtime artefakty a startuje backend na portu `3001`
 
 ## Stav API
 Backend je funkční REST API. Server je v [backend/src/index.ts](C:\Users\shura\git_bash\pomozodpadum\backend\src\index.ts) a endpointy jsou rozdělené do `src/routes/`, `src/controllers/` a `src/services/`.
@@ -73,6 +74,8 @@ Schema je definované v [backend/prisma/schema.prisma](C:\Users\shura\git_bash\p
 - `OPENAI_TEMPERATURE`
 - `OPENAI_MAX_TOKENS`
 - `FRONTEND_URL`
+
+Pro Docker Compose se hodnoty načítají z kořenového `.env` souboru. Doporučená SQLite cesta v kontejneru je `file:./data/app.db`, aby data ležela na pojmenovaném volume místo uvnitř image.
 
 Používej pouze environment variables. NIKDY necommituj `.env`, API klíče ani jiné secrets. Šablona patří do `.env.example`.
 
