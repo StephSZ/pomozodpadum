@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export function readCache<T>(key: string) {
   try {
@@ -26,33 +26,25 @@ export function useAsyncData<T>(
   } = {},
 ) {
   const { cacheKey, enabled = true, initialData } = options;
+  const loaderRef = useRef(loader);
+  loaderRef.current = loader;
+
   const [data, setData] = useState<T | undefined>(() => {
-    if (initialData !== undefined) {
-      return initialData;
-    }
-
-    if (!cacheKey) {
-      return undefined;
-    }
-
+    if (initialData !== undefined) return initialData;
+    if (!cacheKey) return undefined;
     return readCache<T>(cacheKey) ?? undefined;
   });
   const [loading, setLoading] = useState(enabled && data === undefined);
   const [error, setError] = useState<string | null>(null);
 
   const reload = useCallback(async () => {
-    if (!enabled) {
-      return;
-    }
-
+    if (!enabled) return;
     setLoading(true);
     setError(null);
     try {
-      const result = await loader();
+      const result = await loaderRef.current();
       setData(result);
-      if (cacheKey) {
-        writeCache(cacheKey, result);
-      }
+      if (cacheKey) writeCache(cacheKey, result);
     } catch (error) {
       const cached = cacheKey ? readCache<T>(cacheKey) : null;
       if (cached) {
@@ -64,7 +56,7 @@ export function useAsyncData<T>(
     } finally {
       setLoading(false);
     }
-  }, [cacheKey, enabled, loader]);
+  }, [cacheKey, enabled]);
 
   useEffect(() => {
     void reload();
