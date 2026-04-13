@@ -147,14 +147,14 @@ export function WasteGallery() {
 
   useEffect(() => {
     function recalc() {
-      if (wrapRef.current) {
-        const w = wrapRef.current.getBoundingClientRect().width;
-        if (w > 0) {
-          setItemWidth(Math.floor((w - GAP * (VISIBLE - 1)) / VISIBLE));
-        }
+      const shell = document.querySelector(".shell") as HTMLElement;
+      const w = shell ? shell.getBoundingClientRect().width : window.innerWidth;
+      if (w > 0) {
+        setItemWidth(Math.floor((w - GAP * (VISIBLE - 1)) / VISIBLE));
       }
     }
-    const timer = setTimeout(recalc, 50);
+    recalc();
+    const timer = setTimeout(recalc, 100);
     window.addEventListener("resize", recalc);
     return () => {
       clearTimeout(timer);
@@ -163,7 +163,7 @@ export function WasteGallery() {
   }, []);
 
   return (
-    <div className="waste-gallery">
+    <div className="waste-gallery" style={{ maxWidth: "100%", overflow: "hidden" }}>
       <div className="waste-gallery__top">
         <a className="waste-gallery__title" href="/catalog">Třídění a recyklace</a>
         <p className="waste-gallery__sub">Kam s tím a další zajímavosti</p>
@@ -177,7 +177,7 @@ export function WasteGallery() {
         <a className="waste-gallery__hint" href="/catalog">Více informací</a>
       </div>
 
-      <div className="waste-gallery__track-wrap" ref={wrapRef}>
+      <div className="waste-gallery__track-wrap" ref={wrapRef} style={{ overflow: "hidden", width: "100%" }}>
         <div
           className="waste-gallery__track"
           style={{ transform: `translateX(-${pos * (itemWidth + GAP)}px)` }}
