@@ -666,11 +666,42 @@ details summary {
 .home-map__iframe { width: 100%; height: 100%; border: none; }
 
 .waste-gallery { padding: 32px 0 24px; }
-.waste-gallery__top { margin-bottom: 12px; }
-.waste-gallery__title { font-size: 22px; font-weight: 600; color: inherit; text-decoration: none; display: block; margin: 0 0 4px; }
-.waste-gallery__title:hover { text-decoration: underline; text-underline-offset: 3px; }
-.hero-image { width: 100%; height: auto; display: block; margin: 16px 0 24px; object-fit: contain; background: #ffffff; }
-.waste-gallery__sub { font-size: 14px; color: #6b6a65; margin: 0; }
+.hero {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  min-height: 320px;
+  background-image: url('/images/recycling-bins.jpg');
+  background-size: cover;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  background-color: #ffffff;
+  display: flex;
+  align-items: flex-start;
+  padding: 32px 20px 40px;
+  margin-bottom: 24px;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 600px;
+}
+
+.hero-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1a1a18;
+  margin: 0 0 8px;
+  text-shadow: 0 2px 12px rgba(255, 255, 255, 0.9);
+}
+
+.hero-subtitle {
+  font-size: 16px;
+  color: #4a4a45;
+  margin: 0;
+  text-shadow: 0 1px 8px rgba(255, 255, 255, 0.9);
+}
 .waste-gallery__controls { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; margin-bottom: 12px; }
 .waste-gallery__arrows { display: flex; gap: 8px; }
 .waste-gallery__arrow { width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.15); background: #ffffff; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: background 0.15s; }
@@ -692,6 +723,19 @@ details summary {
 .waste-gallery__dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(0,0,0,0.2); display: inline-block; transition: background 0.2s, width 0.2s; }
 .waste-gallery__dot--active { background: #1a1a18; width: 18px; border-radius: 3px; }
 
+@media (min-width: 768px) {
+  .hero {
+    min-height: 420px;
+    padding: 48px 32px 56px;
+  }
+  .hero-title { font-size: 42px; }
+  .hero-subtitle { font-size: 18px; }
+}
+
 @media (min-width: 1024px) {
-  .hero-image { max-width: 800px; margin: 16px auto 32px; }
+  .hero {
+    min-height: 500px;
+    padding: 64px 48px 72px;
+  }
+  .hero-title { font-size: 52px; }
 }
