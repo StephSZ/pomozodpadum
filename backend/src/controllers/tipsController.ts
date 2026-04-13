@@ -43,7 +43,7 @@ async function generateAiTip(): Promise<TipResponse | null> {
     const content = completion.choices[0]?.message?.content?.trim();
     if (!content) return null;
     return {
-      id: 0,
+      id: "ai-generated",
       emoji: "💡",
       title: "Víte, že...?",
       content,
