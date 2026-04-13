@@ -37,6 +37,7 @@ a {
   margin: 0 auto;
   padding: 1rem;
   padding-top: 56px;
+  overflow-x: hidden;
 }
 
 .topbar {
