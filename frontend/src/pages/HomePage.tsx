@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Card, ErrorState, LoadingState } from "../components";
+import { WasteGallery } from "../components/WasteGallery";
 import { api } from "../lib/api";
 import type { Season } from "../types";
 import { useAsyncData } from "../utils";
@@ -20,6 +21,7 @@ export function HomePage() {
 
   return (
     <div className="stack">
+      <WasteGallery />
       <div className="grid grid--3">
         <Card title="Denní tip">
           {tip.loading && !tip.data ? <LoadingState /> : null}
