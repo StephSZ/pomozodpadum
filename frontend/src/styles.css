@@ -669,12 +669,12 @@ details summary {
   margin-left: calc(-50vw + 50%);
   margin-bottom: 24px;
   background-image: url('/images/park-hero.png');
-  background-size: cover;
-  background-position: center 75%;
+  background-size: contain;
+  background-position: center center;
   background-repeat: no-repeat;
   background-color: #f5f3e7;
-  aspect-ratio: 21 / 7;
-  max-height: 420px;
+  aspect-ratio: 16 / 9;
+  max-height: 500px;
   padding: 40px 32px;
 }
 
