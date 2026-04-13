@@ -15,13 +15,16 @@ export function HomePage() {
         {tip.loading && !tip.data ? <LoadingState /> : null}
         {tip.error && !tip.data ? <ErrorState message={tip.error} onRetry={tip.reload} /> : null}
         {tip.data ? (
-          <div className="daily-tip-bar__inner">
-            <span className="daily-tip-bar__icon">{tip.data.emoji}</span>
-            <div>
-              <strong className="daily-tip-bar__headline">{tip.data.title}</strong>
-              <p className="daily-tip-bar__text">{tip.data.content}</p>
+          <>
+            <strong className="daily-tip-bar__title">Denní tip</strong>
+            <div className="daily-tip-bar__inner">
+              <span className="daily-tip-bar__icon">{tip.data.emoji}</span>
+              <div>
+                <strong className="daily-tip-bar__headline">{tip.data.title}</strong>
+                <p className="daily-tip-bar__text">{tip.data.content}</p>
+              </div>
             </div>
-          </div>
+          </>
         ) : null}
       </div>
 

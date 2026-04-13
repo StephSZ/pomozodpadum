@@ -631,6 +631,13 @@ details summary {
   line-height: 1.7;
   margin: 0;
 }
+.daily-tip-bar__title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a18;
+  display: block;
+  margin-bottom: 14px;
+}
 
 .waste-gallery { padding: 32px 0 24px; }
 .waste-gallery__top { margin-bottom: 12px; }
