@@ -7,7 +7,8 @@ import type { WasteCatalogItem } from "../types";
 import { useAsyncData } from "../utils";
 
 export function HomePage() {
-  const tip = useAsyncData(() => api.getTodayTip(), { cacheKey: "today-tip" });
+  const hourKey = new Date().toISOString().slice(0, 13);
+  const tip = useAsyncData(() => api.getTodayTip(), { cacheKey: "today-tip-" + hourKey });
   const [catalogPreview, setCatalogPreview] = useState<Record<string, WasteCatalogItem[]>>({});
 
   useEffect(() => {
