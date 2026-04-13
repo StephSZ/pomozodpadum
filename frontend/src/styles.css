@@ -642,6 +642,16 @@ details summary {
 .home-section { background: #ffffff; border: 1px solid rgba(0,0,0,0.08); border-radius: 12px; padding: 24px 28px; }
 .home-section__title { font-size: 18px; font-weight: 700; color: #1a1a18; display: block; margin-bottom: 6px; }
 .home-section__sub { font-size: 14px; color: #6b6a65; margin: 0 0 20px; }
+.home-section--catalog { background: #e8f0e0; border-color: rgba(0,0,0,0.06); }
+.home-section--catalog .alpha-cell { background: #f5f0c8; border-color: rgba(0,0,0,0.06); }
+.home-section--catalog .alpha-cell:hover { background: #ede89a; }
+.home-section--catalog .alpha-cell__letter { color: #2d4a1e; }
+.home-section--catalog .alpha-cell__items { color: #4a6632; }
+.home-section--catalog .home-section__title { color: #2d4a1e; }
+.home-section--catalog .home-section__sub { color: #4a6632; }
+.home-section--catalog .alpha-preview__more { color: #4a6632; }
+.home-section--catalog .alpha-preview__more:hover { color: #2d4a1e; }
+
 .alpha-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 8px; }
 .alpha-cell { background: #f7f6f1; border: 1px solid rgba(0,0,0,0.07); border-radius: 8px; padding: 8px 10px; cursor: pointer; text-decoration: none; transition: background 0.15s; display: block; }
 .alpha-cell:hover { background: #eeecea; }

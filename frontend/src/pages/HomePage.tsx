@@ -49,7 +49,7 @@ export function HomePage() {
         ) : null}
       </div>
 
-      <div className="home-section">
+      <div className="home-section home-section--catalog">
         <strong className="home-section__title">Katalog odpadů</strong>
         <p className="home-section__sub">Rychlý přehled — klikněte pro více informací</p>
         <div className="alpha-grid">
