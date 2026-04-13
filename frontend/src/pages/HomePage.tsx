@@ -52,22 +52,14 @@ export function HomePage() {
       <div className="home-section">
         <strong className="home-section__title">Katalog odpadů</strong>
         <p className="home-section__sub">Rychlý přehled — klikněte pro více informací</p>
-        <div className="alpha-preview">
+        <div className="alpha-grid">
           {Object.keys(catalogPreview).sort().map((letter) => (
-            <div key={letter} className="alpha-preview__row">
-              <span className="alpha-preview__letter">{letter}</span>
-              <div className="alpha-preview__items">
-                {catalogPreview[letter].map((item) => (
-                  <Link
-                    key={item.id}
-                    to="/catalog"
-                    className="alpha-preview__chip"
-                  >
-                    {item.name}
-                  </Link>
-                ))}
-              </div>
-            </div>
+            <Link key={letter} to="/catalog" className="alpha-cell">
+              <span className="alpha-cell__letter">{letter}</span>
+              <span className="alpha-cell__items">
+                {catalogPreview[letter].map((item) => item.name).join("\n")}
+              </span>
+            </Link>
           ))}
         </div>
         <Link className="alpha-preview__more" to="/catalog">Zobrazit celý katalog →</Link>
