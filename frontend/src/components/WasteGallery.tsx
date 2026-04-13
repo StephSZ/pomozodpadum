@@ -166,6 +166,12 @@ export function WasteGallery() {
     <div className="waste-gallery" style={{ maxWidth: "100%", overflow: "hidden" }}>
       <div className="waste-gallery__top">
         <a className="waste-gallery__title" href="/catalog">Třídění a recyklace</a>
+        <img
+          src="/images/recycling-bins.jpg"
+          alt="Tři barevné kontejnery na tříděný odpad - modrý na papír, žlutý na plast a zelený na sklo"
+          className="hero-image"
+          loading="eager"
+        />
         <p className="waste-gallery__sub">Kam s tím a další zajímavosti</p>
       </div>
 
