@@ -164,18 +164,17 @@ export function WasteGallery() {
 
   return (
     <div className="waste-gallery">
-      <div className="waste-gallery__header">
-        <div>
-          <a className="waste-gallery__title" href="/catalog">Třídění a recyklace</a>
-          <p className="waste-gallery__sub">Kam s tím a další zajímavosti</p>
+      <div className="waste-gallery__top">
+        <a className="waste-gallery__title" href="/catalog">Třídění a recyklace</a>
+        <p className="waste-gallery__sub">Kam s tím a další zajímavosti</p>
+      </div>
+
+      <div className="waste-gallery__controls">
+        <div className="waste-gallery__arrows">
+          <button className="waste-gallery__arrow" disabled={pos === 0} onClick={() => setPos(p => p - 1)}>&#8592;</button>
+          <button className="waste-gallery__arrow" disabled={pos >= pages - 1} onClick={() => setPos(p => p + 1)}>&#8594;</button>
         </div>
-        <div className="waste-gallery__controls">
-          <div className="waste-gallery__arrows">
-            <button className="waste-gallery__arrow" disabled={pos === 0} onClick={() => setPos(p => p - 1)}>&#8592;</button>
-            <button className="waste-gallery__arrow" disabled={pos >= pages - 1} onClick={() => setPos(p => p + 1)}>&#8594;</button>
-          </div>
-          <a className="waste-gallery__hint" href="/catalog">Více informací</a>
-        </div>
+        <a className="waste-gallery__hint" href="/catalog">Více informací</a>
       </div>
 
       <div className="waste-gallery__track-wrap" ref={wrapRef}>

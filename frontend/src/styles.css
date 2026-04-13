@@ -602,11 +602,11 @@ details summary {
 }
 
 .waste-gallery { padding: 32px 0 24px; }
-.waste-gallery__header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 20px; }
+.waste-gallery__top { margin-bottom: 12px; }
 .waste-gallery__title { font-size: 22px; font-weight: 600; color: inherit; text-decoration: none; display: block; margin: 0 0 4px; }
 .waste-gallery__title:hover { text-decoration: underline; text-underline-offset: 3px; }
 .waste-gallery__sub { font-size: 14px; color: #6b6a65; margin: 0; }
-.waste-gallery__controls { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.waste-gallery__controls { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; margin-bottom: 12px; }
 .waste-gallery__arrows { display: flex; gap: 8px; }
 .waste-gallery__arrow { width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.15); background: #ffffff; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: background 0.15s; }
 .waste-gallery__arrow:hover:not(:disabled) { background: #f1efe8; }
